@@ -15,8 +15,8 @@ int64_t hires_time()
 #else
 	timeval tv;
 	gettimeofday(&tv, NULL);
-	t = t1.tv_sec * 1000000;
-	t += t1.tv_usec;
+	t = tv.tv_sec * 1000000;
+	t += tv.tv_usec;
 #endif	
 	return t;
 }
