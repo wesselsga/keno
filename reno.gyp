@@ -37,7 +37,8 @@
 			'type': 'static_library',
 			
 			'include_dirs+': [
-				'./src/core'
+				'./src/core',
+				'./deps/freeimage-3154',
 			],
 			
 			'defines': ['FREEIMAGE_LIB'],
@@ -70,8 +71,7 @@
 					
 					'defines': ['GLEW_STATIC','GLEW_NO_GLU'],
 					'include_dirs+': [
-					    './src/gfx/glew',
-						'./deps/freeimage-3154',
+					    './src/gfx/glew',						
 					]
 				}],	
 
