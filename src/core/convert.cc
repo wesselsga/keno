@@ -1,7 +1,10 @@
 #include "core.h"
 
 #include <locale>
+
+#ifdef _WIN32
 #include <codecvt>
+#endif
 
 namespace convert {
 
@@ -43,8 +46,12 @@ std::string to_utf8(uint64_t n)
 //
 std::string to_utf8(const std::wstring& utf16)
 {
+#ifdef _WIN32
 	std::wstring_convert<std::codecvt_utf8<wchar_t>> facet;
 	return facet.to_bytes(utf16);
+#else
+	return "";
+#endif
 }
 
 //
@@ -52,8 +59,12 @@ std::string to_utf8(const std::wstring& utf16)
 //
 std::wstring to_utf16(const std::string& utf8)
 {
+#ifdef _WIN32
 	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> facet;		
 	return facet.from_bytes(utf8);	
+#else
+	return L"";
+#endif
 }
 
 

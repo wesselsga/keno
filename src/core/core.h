@@ -14,7 +14,7 @@
 #include <iomanip>
 #include <sstream>
 
-#include "../../deps/libuv/uv.h"
+#include "../../deps/include/uv/uv.h"
 
 #ifdef _WIN32
 #ifndef WINVER

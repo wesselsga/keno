@@ -54,7 +54,7 @@
 								'LinkIncremental': '1',
 								'OptimizeReferences': '2',
 								'EnableCOMDATFolding': '2',
-								'AdditionalLibraryDirectories': '..\\deps\\bin\\win32\\<(arch)\\Release'
+								'AdditionalLibraryDirectories': '..\\deps\\lib\\win32\\<(arch)\\Release'
 							}, # VCLinkerTool
 						} # msvs_settings
 					}]
@@ -82,7 +82,7 @@
 							'VCLinkerTool': {					
 								'GenerateDebugInformation': 'true',
 								'LinkIncremental': '2',
-								'AdditionalLibraryDirectories': '..\\deps\\bin\\win32\\<(arch)\\Debug'
+								'AdditionalLibraryDirectories': '..\\deps\\lib\\win32\\<(arch)\\Debug'
 							}, # VCLinkerTool
 						} # msvs_settings
 					}]
