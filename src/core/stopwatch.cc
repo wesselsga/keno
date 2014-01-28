@@ -45,7 +45,7 @@ const int64_t __ticksPerDay         = __ticksPerHour * 24;
 const int64_t __minMilliseconds     = -922337203685477L;
 const int64_t __maxMilliseconds     = 922337203685477L;
 
-TimeSpan::TimeSpan() : _ticks(0L)
+/*TimeSpan::TimeSpan() : _ticks(0L)
 {
 }
 
@@ -195,11 +195,11 @@ std::ostream& operator<<(std::ostream& out, const TimeSpan& span)
 
 	return out;
 }
-
+*/
 
 
 // static member for clock frequency
-StopWatch::StopWatch()
+/*StopWatch::StopWatch()
 {
 	init(0);   
 }
@@ -274,4 +274,4 @@ std::ostream& operator<<(std::ostream& out, const StopWatch& sw)
 {
 	out << sw.elapsed();
 	return out;
-}
+}*/

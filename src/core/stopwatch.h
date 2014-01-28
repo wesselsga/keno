@@ -11,7 +11,7 @@ int64_t hires_frequency();
 //
 // uses 100-ns ticks
 //
-class TimeSpan
+/*class TimeSpan
 {
 public:
    TimeSpan();
@@ -48,11 +48,11 @@ private:
 
 	int64_t _ticks;
 
-};
+};*/
 
-std::ostream& operator<<(std::ostream&, const TimeSpan&);
+//std::ostream& operator<<(std::ostream&, const TimeSpan&);
 
-class StopWatch
+/*class StopWatch
 {
 public:
    StopWatch();
@@ -81,4 +81,4 @@ private:
 	int64_t _time;
 	bool _started;
 
-};
+};*/
