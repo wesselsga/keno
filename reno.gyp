@@ -70,7 +70,6 @@
 					
 					'defines': ['GLEW_STATIC','GLEW_NO_GLU'],
 					'include_dirs+': [
-					    './src/gfx/glew',
 						'./deps/include',						
 					]
 				}],	
