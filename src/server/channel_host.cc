@@ -93,7 +93,7 @@ std::shared_ptr<ChannelHost> ChannelHost::create(
 	host->_options.stdio = stdio;
 	host->_options.stdio_count = 3;
 
-   LOG(VERBOSE) << "spawn: " << str;
+   LOG(VERBOSE) << "spawn: " << path << " " << str;
 
 	// alloc and spawn a process
 	host->_process = reinterpret_cast<uv_process_t*>(malloc(sizeof(uv_process_t)));
