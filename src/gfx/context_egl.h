@@ -1,7 +1,4 @@
-#ifndef __CONTEXT_RASPI_H__
-#define __CONTEXT_RASPI_H__
-
-
+#pragma once
 
 namespace gfx {
 	
@@ -28,6 +25,3 @@ private:
 };
 
 }; // gfx
-
-
-#endif //  __CONTEXT_RASPI_H__

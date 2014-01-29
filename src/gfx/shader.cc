@@ -1,6 +1,12 @@
 #include "gfx.h"
 #include "shader.h"
 
+#ifdef _WIN32
+#include <GL/glew.h>
+#else
+#include <GLES2/gl2.h>
+#endif
+
 using namespace gfx;
 
 Shader::Shader(const _priv&, const GLuint id) : _id(id)
