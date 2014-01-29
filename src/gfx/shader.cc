@@ -4,6 +4,8 @@
 #ifdef _WIN32
 #include <GL/glew.h>
 #include <GL/wglew.h>
+#else
+#include <GLES2/gl2.h>
 #endif
 
 using namespace gfx;
