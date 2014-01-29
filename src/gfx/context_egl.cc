@@ -97,7 +97,9 @@ std::shared_ptr<Context> EglContext::create(void* handle)
 
 	ctx.reset(new EglContext());
 
-	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	//glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+	glClearColor(1.0f, 0.27f, 0.20f, 0.0f);
    
 	ctx->_ctx = context;
 	ctx->_display = display;
