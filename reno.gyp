@@ -107,7 +107,7 @@
 				['OS=="win"', {
 					
 					'link_settings':  {
-						'libraries': [ '-lkernel32.lib;psapi.lib;advapi32.lib;iphlpapi.lib;ws2_32.lib;winmm.lib;libuv.lib' ]
+					'libraries': [ '-lkernel32.lib;psapi.lib;advapi32.lib;iphlpapi.lib;ws2_32.lib;winmm.lib;libuv.lib' ]
 					},
 					
 				}],
@@ -123,8 +123,8 @@
 					],
 					
 					'link_settings': {
-					    'ldflags': ['-L/opt/vc/lib'],						
-						'libraries': [ ]
+					    'ldflags': ['-L/opt/vc/lib -L../deps/lib/rpi/Release'],						
+					    'libraries': [ '-luv -lpthread -lrt' ]
 					}
 				}]
 				
@@ -178,12 +178,12 @@
 				
 					'include_dirs+': [
 					    '/opt/vc/include',
-						'/opt/vc/include/interface/vcos/pthreads',
+					    '/opt/vc/include/interface/vcos/pthreads',
 					],
 					
 					'link_settings': {
-					    'ldflags': ['-L/opt/vc/lib -L../deps/lib/rpi/Release'],						
-						'libraries': [ '-lbcm_host -lEGL -lGLESv2 -lpng15' ]
+					    'ldflags': ['-L/opt/vc/lib -L./deps/lib/rpi/Release'],						
+					    'libraries': [ '-lbcm_host -lEGL -lGLESv2 -lpng15 -luv' ]
 					}
 				}]
 				
