@@ -1,5 +1,4 @@
-#ifndef __WINDOW_RPI_H__
-#define __WINDOW_RPI_H__
+#pragma once
 
 namespace rpi {
 
@@ -25,5 +24,3 @@ private:
 };
 
 };
-
-#endif // __WINDOW_RPI_H__

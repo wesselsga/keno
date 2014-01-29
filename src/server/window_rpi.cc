@@ -1,4 +1,4 @@
-#include "player.h"
+#include "server.h"
 
 #include <bcm_host.h>
 #include <EGL/egl.h>
