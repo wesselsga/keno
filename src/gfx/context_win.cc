@@ -2,8 +2,7 @@
 
 #include "context_win.h"
 
-#include <GL/glew.h>
-#include <GL/wglew.h>
+#include "GL/wglew.h"
 
 using namespace gfx;
 

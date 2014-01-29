@@ -1,6 +1,4 @@
-#ifndef __CONTEXT_WIN_H__
-#define __CONTEXT_WIN_H__
-
+#pragma once
 
 namespace gfx {
 
@@ -25,6 +23,3 @@ private:
 };
 
 }; // gfx
-
-
-#endif //  __CONTEXT_WIN_H__

@@ -2,6 +2,7 @@
 
 #include "core.h"
 
+#include "GL/glew.h"
 
 #include "context.h"
 #include "image.h"
