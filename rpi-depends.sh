@@ -7,6 +7,17 @@ build_dir="./build/deps"
 rm -rf "$build_dir"
 mkdir -p "$build_dir"
 
+echo "building libuv..."
+unzip "$src_dir/libuv-master.zip" -d "$build_dir/"
+cd "$build_dir/libuv-master"
+
+
+#echo "building freeimage..."
+#unzip "$src_dir/FreeImage3154.zip" -d "$build_dir/"
+#cd "$build_dir/FreeImage"
+#make
+#make install DESTDIR=$build_dir
+
 #echo "building zlib..."
 #tar -xzvf "$src_dir/zlib-1.2.7.tar.gz" --directory="$build_dir/"
 #cd "$build_dir/zlib-1.2.7"
@@ -21,10 +32,13 @@ mkdir -p "$build_dir"
 #make check
 #make install
 
-echo "building v8..."
-tar -xzvf "$src_dir/v8.tar.gz" --directory="$build_dir/"
-cd "$build_dir/v8"
-make arm.release armv7=false vfp3=off hardfp=on
+#echo "building v8..."
+#tar -xzvf "$src_dir/v8.tar.gz" --directory="$build_dir/"
+#cd "$build_dir/v8"
+#make arm.release armv7=false vfp3=off hardfp=on
+
+
+
 
 cd "$cur_dir"
 
