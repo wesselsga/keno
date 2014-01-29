@@ -48,7 +48,7 @@ int32_t main(int32_t argc, char* argv[])
 	{
 		auto* loop = uv_default_loop();
 
-		char* maddr = "239.255.0.1";
+		const char* maddr = "239.255.0.1";
 		int32_t port = 2115;
 
 		uv_udp_t listener;

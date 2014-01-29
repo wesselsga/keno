@@ -73,7 +73,7 @@ int32_t Server::run()
 
 	int ret;
 	
-	char* maddr = "239.255.0.1";
+	const char* maddr = "239.255.0.1";
 	int32_t port = 2115;
 
 	uv_udp_t listener;
