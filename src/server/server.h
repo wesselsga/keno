@@ -11,6 +11,7 @@
 #include <condition_variable>
 
 class Channel;
+class ChannelHost;
 
 class Server
 {

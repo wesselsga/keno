@@ -24,7 +24,9 @@ void prompt()
 
 void wait_for_a_while(uv_idle_t* handle, int status) 
 {
-	::Sleep(10);    
+#ifdef _WIN32
+	::Sleep(10);
+#endif
 }
 
 Channel::Channel(const _priv&, 
@@ -65,23 +67,20 @@ int32_t Channel::run(const std::string& id)
 		std::shared_ptr<gfx::Context> ctx;
 
 #ifdef _WIN32
-		channel->_window = win::Window::create(channel);
+		auto window = win::Window::create(channel);
 
-		ctx = gfx::Context::create(channel->_window->handle());
+		ctx = gfx::Context::create(window->handle());
 
-		channel->_window->show();
-		channel->_window->update();
+		window->show();
+		window->update();
 #else
 
-		channel->_window = rpi::Window::create();
+		auto window = rpi::Window::create();
 
 		ctx = gfx::Context::create(window->handle());
 
 #endif
-
-
-
-
+		
 
 		LOG(DEBUG) << "channel: staring rendering loop ...";
 
@@ -92,11 +91,13 @@ int32_t Channel::run(const std::string& id)
 
 		for (;;)
 		{
-			if (channel->_window->pump() < 0)
+#ifdef _WIN32
+			if (window->pump() < 0)
 			{
 				channel->close();
 				break;
 			}
+#endif
 
 			//::Sleep(1);	
 

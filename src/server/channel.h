@@ -36,6 +36,6 @@ private:
 
 	const std::weak_ptr<Server> _server;
 	const std::string _id;
-	std::shared_ptr<win::Window> _window;
+	//std::shared_ptr<win::Window> _window;
 
 };
