@@ -7,7 +7,7 @@ static void on_alloc(uv_handle_t* handle,
                      uv_buf_t* buf) 
 {
    
-   LOG(VERBOSE) << "libuv: on_alloc " << suggested;
+   //LOG(VERBOSE) << "libuv: on_alloc " << suggested;
 
    buf->len = suggested + 64;
    buf->base = (char*)malloc(buf->len);
@@ -20,17 +20,13 @@ static void on_close(uv_handle_t* handle)
 
 static void on_read(uv_stream_t* pipe, ssize_t n, const uv_buf_t* rdbuf) 
 {
-   LOG(VERBOSE) << "on read  n:" << n;
-  
    if (!rdbuf->base){
       return;
    }
 
    if (n <= 0)
    {
-      if (rdbuf->base){
-         free(rdbuf->base);
-      }
+      free(rdbuf->base);
       return;
    }
    
@@ -128,7 +124,8 @@ void ChannelHost::onExit(uv_process_t* process,
    // first, close the process handle
    uv_close((uv_handle_t*)process, on_close);
 
-   LOG(VERBOSE) << "host: process exit: " << exit_status << ", signal:" << term_signal;
+   LOG(VERBOSE) << "host: process exit:" 
+         << exit_status << ", signal:" << term_signal;
 
    // next, close the pipe handle as well
    ChannelHost* host = reinterpret_cast<ChannelHost*>(process->data);	 

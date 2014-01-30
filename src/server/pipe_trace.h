@@ -16,12 +16,7 @@ public:
 private:
 	uv_pipe_t* _pipe;
 
-	size_t _bufcount;
-	size_t _bufsize;
-	char** _buffers;
-	size_t _bufindex;
-
-	static void after_write(uv_write_t*, int);
+   static void after_write(uv_write_t*, int);
 };
 
 };
