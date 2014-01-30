@@ -3,7 +3,7 @@
 
 using namespace trace;
 
-PipeWriter::PipeWriter(uv_pipe_t pipe) 
+PipeWriter::PipeWriter(uv_pipe_t* pipe) 
 	: _pipe(pipe)
 {
 	_bufindex = 0;
@@ -38,7 +38,7 @@ void PipeWriter::writeLine(int32_t,const std::string& msg)
 	uv_buf_t buf = uv_buf_init(_buffers[_bufindex], msg.size());	
 	
 	if (uv_write(req, 
-				(uv_stream_t*)&_pipe, 
+				(uv_stream_t*)_pipe, 
 				&buf, 1, 
 				after_write))
 	{

@@ -8,13 +8,13 @@ namespace trace {
 class PipeWriter : public trace::Writer
 {
 public:
-	PipeWriter(uv_pipe_t);
+	PipeWriter(uv_pipe_t*);
 	~PipeWriter();
 
 	void writeLine(int32_t,const std::string&);
 
 private:
-	uv_pipe_t _pipe;
+	uv_pipe_t* _pipe;
 
 	size_t _bufcount;
 	size_t _bufsize;

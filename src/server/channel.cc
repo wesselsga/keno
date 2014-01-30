@@ -145,7 +145,7 @@ void Channel::iothread(void* arg)
 		return;
 	}
 
-	uv_pipe_t stdout_pipe;
+	uv_pipe_t stdout_pipe = {0};
 
 	auto loop = uv_default_loop();//uv_loop_new();
 
@@ -157,7 +157,7 @@ void Channel::iothread(void* arg)
 		uv_pipe_open(&stdout_pipe, 1);
 		uv_unref((uv_handle_t*)&stdout_pipe);
 		
-		auto writer = std::make_shared<trace::PipeWriter>(stdout_pipe);
+		auto writer = std::make_shared<trace::PipeWriter>(&stdout_pipe);
 		trace::addWriter(":pipe", writer);
 	}
 

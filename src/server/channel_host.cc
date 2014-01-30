@@ -6,10 +6,11 @@ static void on_alloc(uv_handle_t* handle,
                      size_t suggested,
                      uv_buf_t* buf) 
 {
+   
+   LOG(VERBOSE) << "libuv: on_alloc " << suggested;
+
    buf->len = suggested + 64;
    buf->base = (char*)malloc(buf->len);
-   
-   //LOG(VERBOSE) << "libuv: on_alloc " << suggested;
 }
 
 static void on_close(uv_handle_t* handle) 
@@ -19,6 +20,8 @@ static void on_close(uv_handle_t* handle)
 
 static void on_read(uv_stream_t* pipe, ssize_t n, const uv_buf_t* rdbuf) 
 {
+   LOG(VERBOSE) << "on read  n:" << n;
+  
    if (!rdbuf->base){
       return;
    }
@@ -88,10 +91,10 @@ std::shared_ptr<ChannelHost> ChannelHost::create(
    uv_stdio_container_t stdio[3];
    stdio[0].flags = UV_IGNORE;
    stdio[0].data.stream = nullptr;
-   //stdio[1].flags = (uv_stdio_flags)(UV_CREATE_PIPE | UV_WRITABLE_PIPE);
-   //stdio[1].data.stream = (uv_stream_t*)host->_out;
-   stdio[1].flags = UV_IGNORE;
-   stdio[1].data.stream = nullptr;
+   stdio[1].flags = (uv_stdio_flags)(UV_CREATE_PIPE | UV_WRITABLE_PIPE);
+   stdio[1].data.stream = (uv_stream_t*)host->_out;
+   //stdio[1].flags = UV_IGNORE;
+   //stdio[1].data.stream = nullptr;
    stdio[2].flags = UV_IGNORE;
    stdio[2].data.stream = nullptr;
       
