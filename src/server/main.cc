@@ -13,16 +13,16 @@ int32_t main(int32_t argc, char* argv[])
 		}
 	}
 
-   auto writer = std::make_shared<trace::FileWriter>("test.log");
-   trace::addWriter(":file", writer);
-	
 	if (channel.empty()) 
 	{
-		ret = Server::run();		
-	}
+      ret = Server::run();		
+	}  
 	else
 	{
-		ret = Channel::run(channel);		
+
+      auto writer = std::make_shared<trace::FileWriter>("test.log");
+		trace::addWriter(":file", writer);
+      ret = Channel::run(channel);		
 	}
 
 	return ret;

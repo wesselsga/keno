@@ -44,13 +44,13 @@ std::shared_ptr<Window> Window::create()
 	std::shared_ptr<Window>win(new Window());
    
    // You can hardcode the resolution here:
-   display_width = 640;
-   display_height = 480;
+   //display_width = 640;
+   //display_height = 480;
 
-   dst_rect.x = 0;
-   dst_rect.y = 0;
-   dst_rect.width = display_width;
-   dst_rect.height = display_height;
+   dst_rect.x = display_width - 640;
+   dst_rect.y = display_height - 480;
+   dst_rect.width = 640;
+   dst_rect.height = 480;
       
    src_rect.x = 0;
    src_rect.y = 0;

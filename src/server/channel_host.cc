@@ -65,7 +65,7 @@ std::shared_ptr<ChannelHost> ChannelHost::create(
    if (uv_exepath(path, &pathSize)){
       return nullptr;
    }
-   path[pathSize] = '\0';
+   //path[pathSize] = '\0';
 
    std::string str("--channel=");
    str.append(id);
@@ -87,9 +87,13 @@ std::shared_ptr<ChannelHost> ChannelHost::create(
 
    uv_stdio_container_t stdio[3];
    stdio[0].flags = UV_IGNORE;
-   stdio[1].flags = (uv_stdio_flags)(UV_CREATE_PIPE | UV_WRITABLE_PIPE);
-   stdio[1].data.stream = (uv_stream_t*)host->_out;
+   stdio[0].data.stream = nullptr;
+   //stdio[1].flags = (uv_stdio_flags)(UV_CREATE_PIPE | UV_WRITABLE_PIPE);
+   //stdio[1].data.stream = (uv_stream_t*)host->_out;
+   stdio[1].flags = UV_IGNORE;
+   stdio[1].data.stream = nullptr;
    stdio[2].flags = UV_IGNORE;
+   stdio[2].data.stream = nullptr;
       
    host->_options.stdio = stdio;
    host->_options.stdio_count = 3;
@@ -120,6 +124,8 @@ void ChannelHost::onExit(uv_process_t* process,
 {
    // first, close the process handle
    uv_close((uv_handle_t*)process, on_close);
+
+   LOG(VERBOSE) << "host: process exit: " << exit_status << ", signal:" << term_signal;
 
    // next, close the pipe handle as well
    ChannelHost* host = reinterpret_cast<ChannelHost*>(process->data);	 
