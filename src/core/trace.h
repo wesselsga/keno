@@ -1,8 +1,6 @@
 #pragma once
 
-//#ifndef ASSERT
-//#define ASSERT(condition) if (!(condition)) ::DebugBreak();
-//#endif
+#include <assert.h>
 
 namespace trace {
 
@@ -27,8 +25,36 @@ void clearWriters();
 class Writer
 {
 public:
+   virtual ~Writer(){}
+
 	virtual void writeLine(int32_t,const std::string&)=0;
 };
+
+//
+// simple writer to std::cout
+//
+class StdWriter : public Writer
+{
+public:
+	void writeLine(int32_t,const std::string&);
+};
+
+//
+// writer to a text file
+//
+class FileWriter : public Writer
+{
+public:
+   FileWriter(const std::string&);
+   virtual ~FileWriter();
+
+	void writeLine(int32_t,const std::string&);
+
+private:
+   FileWriter(){}
+   const std::string _filename;
+};
+
 
 #define ___LOG_DEBUG(clsname, ...) \
 	clsname(__FILE__, __LINE__, trace::debug, ##__VA_ARGS__)
@@ -97,5 +123,6 @@ public:
    // higher than ?:
    void operator&(std::ostream&) { }
 };
+
 
 }; // trace

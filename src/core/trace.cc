@@ -18,15 +18,6 @@ public:
 #endif
 
 //
-// write to std::cout
-//
-class StdWriter : public Writer
-{
-public:
-	void writeLine(int32_t,const std::string&);
-};
-
-//
 // manage collection of writers
 //
 class Log
@@ -173,6 +164,32 @@ void StdWriter::writeLine(int32_t,const std::string& msg)
 	std::cout << msg;
 }
 
+FileWriter::FileWriter(const std::string& filename) 
+   : _filename(filename)
+{
+}
+
+FileWriter::~FileWriter()
+{
+}
+
+void FileWriter::writeLine(int32_t,const std::string& msg)
+{
+   FILE* fp;
+#ifdef _WIN32
+   std::wstring wfile = convert::to_utf16(_filename);
+   fp = _wfopen(wfile.c_str(), L"a");
+#else
+   fp = fopen(_filename.c_str(), "a");
+#endif
+
+   if (fp)
+   {
+      fwrite(msg.c_str(),sizeof(char),msg.size(),fp);
+      fclose(fp);
+   }
+}
+
 
 
 Log::Log()
@@ -189,7 +206,8 @@ Log::Log()
 void Log::addWriter(const std::string& key, 
 		const std::shared_ptr<Writer>& out)
 {
-	if (out.get())
+   assert(out != nullptr);
+	if (out)
 	{
 		removeWriter(key);
 		_writers[key] = out;
@@ -210,7 +228,8 @@ void Log::clearWriters()
 }
 
 //
-// simply sends the message to all registered listeners
+// simply sends the message to all 
+// registered writer objects
 //
 void Log::writeLine(int32_t severity, const std::string& msg)
 {

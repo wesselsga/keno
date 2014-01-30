@@ -52,7 +52,7 @@ Server::~Server()
 
 int32_t Server::run()
 {
-	LOG(INFO) << "server: starting " 
+   LOG(INFO) << "server: starting " 
 			<< PRODUCT << " (v" << VERSION_STR << ") ...";
 	
 	std::shared_ptr<Server> server = std::make_shared<Server>(_priv{});

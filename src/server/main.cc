@@ -12,6 +12,9 @@ int32_t main(int32_t argc, char* argv[])
 			channel.assign(argv[arg] + 10);
 		}
 	}
+
+   auto writer = std::make_shared<trace::FileWriter>("test.log");
+   trace::addWriter(":file", writer);
 	
 	if (channel.empty()) 
 	{

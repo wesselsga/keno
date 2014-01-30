@@ -72,6 +72,10 @@ std::shared_ptr<Window> Window::create()
 				0/*clamp*/, 
 				DISPMANX_NO_ROTATE);
 
+   if (dispman_element)
+   {
+      LOG(ERR) << "rpi: failed to add display element.";
+   }
 
 	EGL_DISPMANX_WINDOW_T* eglw = new EGL_DISPMANX_WINDOW_T;
 	eglw->element = dispman_element;
