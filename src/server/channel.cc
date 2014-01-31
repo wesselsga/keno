@@ -10,6 +10,7 @@
 #include "window_win.h"
 #else
 #include "window_rpi.h"
+#include <unistd.h>
 #endif
 
 void prompt()
@@ -26,6 +27,8 @@ void wait_for_a_while(uv_idle_t* handle, int status)
 {
 #ifdef _WIN32
 	::Sleep(10);
+#else
+   sleep(1);
 #endif
 }
 

@@ -72,7 +72,7 @@ std::shared_ptr<Window> Window::create()
 				0/*clamp*/, 
 				DISPMANX_NO_ROTATE);
 
-   if (dispman_element)
+   if (!dispman_element)
    {
       LOG(ERR) << "rpi: failed to add display element.";
    }
