@@ -11,7 +11,9 @@ public:
 	explicit Window(const _ctx&);
 	virtual ~Window();
 
-	static std::shared_ptr<Window> create(const std::weak_ptr<Channel>&);
+	static std::shared_ptr<Window> create(
+            const std::string&,
+            const std::weak_ptr<Channel>&);
 
 	HWND handle() const { return _hwnd; }
 	void show() const;

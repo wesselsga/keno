@@ -17,6 +17,7 @@ Window::~Window()
 }
 
 std::shared_ptr<Window> Window::create(
+         const std::string& title,
 			const std::weak_ptr<Channel>& channel)
 {
 	std::shared_ptr<Window> win(std::make_shared<Window>(_ctx{}));
@@ -47,34 +48,25 @@ std::shared_ptr<Window> Window::create(
 		::RegisterClassEx(&wcls);
 	}
 
-	uint32_t w = 1680;
-	uint32_t h = 1050;
+	uint32_t w = 640;
+	uint32_t h = 480;
 
 	DWORD style = WS_OVERLAPPEDWINDOW;
 	DWORD exstyle = WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;
 
-	if (win->fullScreen(w, h))
+	/*if (win->fullScreen(w, h))
 	{
 		style = WS_POPUP;
 		exstyle = WS_EX_APPWINDOW;		
-	}
+	}*/
 	
 	// rc is the desired client size we want
 	RECT rc = {0, 0, w, h};
 	::AdjustWindowRectEx(&rc, style, FALSE, 0);
 	
-	std::string caption("Channel:");
-
-	{
-		auto chn = channel.lock();
-		if (chn){
-			caption.append(chn->id());
-		}
-	}
-
 	HWND hwnd = ::CreateWindowEx(exstyle,
 					clsname,
-					convert::to_utf16(caption).c_str(),
+					convert::to_utf16(title).c_str(),
 					style,
 					CW_USEDEFAULT,
 					CW_USEDEFAULT,

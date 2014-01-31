@@ -1,5 +1,6 @@
 #include "server.h"
 #include "channel.h"
+#include "../version.h"
 
 #include "stopwatch.h"
 
@@ -23,11 +24,8 @@ void prompt()
 
 void wait_for_a_while(uv_idle_t* handle, int status) 
 {
-#ifdef _WIN32
-	::Sleep(10);
-#else
-   sleep(1);
-#endif
+   std::chrono::milliseconds timeout(10);
+   std::this_thread::sleep_for(timeout);
 }
 
 Channel::Channel(const _priv&, 
@@ -67,8 +65,11 @@ int32_t Channel::run(const std::string& id)
 	{
 		std::shared_ptr<gfx::Context> ctx;
 
+      std::stringstream title;
+      title << PRODUCT << " | " << "channel: " << channel->id();
+
 #ifdef _WIN32
-		auto window = win::Window::create(channel);
+		auto window = win::Window::create(title.str(), channel);
 
 		ctx = gfx::Context::create(window->handle());
 
@@ -114,8 +115,8 @@ int32_t Channel::run(const std::string& id)
 						static_cast<double>((now - mark) / (freq*1.0));
 
 				double fps = frame / elapsed;
-				LOG(VERBOSE) << "channel: " 
-						<< std::fixed << std::setprecision(2)
+				LOG(VERBOSE) << "channel: fps:" 
+						<< std::fixed << std::setprecision(3)
 						<< fps;
 
 				frame = 0;

@@ -4,19 +4,31 @@
 
 static void alloc_cb(uv_handle_t* handle,
                      size_t suggested_size,
-                     uv_buf_t* buf) {
-  static char slab[65536];
-  //CHECK_HANDLE(handle);
-  //ASSERT(suggested_size <= sizeof(slab));
-  buf->base = slab;
-  buf->len = sizeof(slab);
+                     uv_buf_t* buf) 
+{
+   buf->len = suggested_size + 128;
+   buf->base = reinterpret_cast<char*>(malloc(buf->len));
+}
+
+static void send_cb(uv_udp_send_t* req, int status)
+{
+
 }
 
 static void recv_packet(uv_udp_t* handle,
                        ssize_t nread,
                        const uv_buf_t* buf,
                        const struct sockaddr* addr,
-                       unsigned flags) {
+                       unsigned flags) 
+{
+   if (!buf->base){
+      return;
+   }
+
+   LOG(VERBOSE) << "net: pkt" << std::string(buf->base, nread);
+
+   free(buf->base);
+
   //CHECK_HANDLE(handle);
   //ASSERT(flags == 0);
 
@@ -78,16 +90,27 @@ int32_t Server::run()
 
 	uv_udp_t listener;
 	uv_udp_init(loop, &listener);
-	struct sockaddr_in recv_addr;
-	uv_ip4_addr("0.0.0.0", port, &recv_addr);	
-	uv_udp_bind(&listener, (const struct sockaddr*)&recv_addr, 0);
+	struct sockaddr_in addr;
+	uv_ip4_addr("0.0.0.0", port, &addr);	
+	uv_udp_bind(&listener, (const struct sockaddr*)&addr, 0);
 	
 	ret = uv_udp_set_membership(&listener, maddr, NULL, UV_JOIN_GROUP);
 
 	ret = uv_udp_recv_start(&listener, alloc_cb, recv_packet);
 
 	LOG(INFO) << "net: listening on udp://" << maddr << ":" << port << " ...";
-
+   
+   uv_udp_send_t* send_req = (uv_udp_send_t*)malloc(sizeof(uv_udp_send_t));
+   
+   uv_buf_t buf = uv_buf_init("HELLO", 5);
+   
+   uv_udp_send(send_req,
+            &listener, 
+            &buf, 
+            1,
+            (const struct sockaddr*)&addr, 
+            send_cb);
+    
 	uv_run(loop, UV_RUN_DEFAULT);
 
 	LOG(INFO) << "server: exit.";	
