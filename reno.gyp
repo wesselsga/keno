@@ -154,8 +154,6 @@
             './src/server/server.h',				
             './src/server/server.cc',				
             './src/server/main.cc',
-            './src/server/pipe_trace.h',
-            './src/server/pipe_trace.cc',
             './src/server/window_win.h',
             './src/server/window_win.cc',
             './src/server/window_rpi.h',
