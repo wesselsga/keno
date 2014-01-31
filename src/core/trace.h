@@ -55,6 +55,23 @@ private:
    const std::string _filename;
 };
 
+//
+// write trace messages to a libuv stream
+//
+class UvWriter : public trace::Writer
+{
+public:
+	UvWriter(uv_stream_t*);
+	~UvWriter();
+
+	void writeLine(int32_t,const std::string&);
+
+private:
+	uv_stream_t* _stream;
+
+   static void after_write(uv_write_t*, int);
+};
+
 
 #define ___LOG_DEBUG(clsname, ...) \
 	clsname(__FILE__, __LINE__, trace::debug, ##__VA_ARGS__)

@@ -1,8 +1,6 @@
 #include "server.h"
 #include "channel.h"
 
-#include "pipe_trace.h"
-
 #include "stopwatch.h"
 
 
@@ -148,7 +146,7 @@ void Channel::iothread(void* arg)
 		return;
 	}
 
-	uv_pipe_t stdout_pipe = {0};
+	uv_pipe_t pipe = {0};
 
 	auto loop = uv_default_loop();//uv_loop_new();
 
@@ -156,11 +154,12 @@ void Channel::iothread(void* arg)
 	{
 		trace::clearWriters();
 
-		uv_pipe_init(loop, &stdout_pipe, 0);
-		uv_pipe_open(&stdout_pipe, 1);
-		uv_unref((uv_handle_t*)&stdout_pipe);
+		uv_pipe_init(loop, &pipe, 0);
+		uv_pipe_open(&pipe, 1);
+		uv_unref((uv_handle_t*)&pipe);
 		
-		auto writer = std::make_shared<trace::PipeWriter>(&stdout_pipe);
+      auto writer = 
+            std::make_shared<trace::UvWriter>((uv_stream_t*)&pipe);
 		trace::addWriter(":pipe", writer);
 	}
 
