@@ -80,7 +80,7 @@ bool Node::open(uv_loop_t* loop)
       return false;
    }
 
-   uv_udp_set_multicast_loop(&_transport, 0);
+   uv_udp_set_multicast_loop(&_transport, 1);
 
 	ret = uv_udp_recv_start(&_transport, alloc_cb, recv_packet);
    if (ret)
@@ -106,12 +106,14 @@ bool Node::send(Frame*)
 {
    uv_udp_send_t* send_req = (uv_udp_send_t*)malloc(sizeof(uv_udp_send_t));
    
+   uint16_t len = 37;
+   len = htons(len);
+
    char* data = reinterpret_cast<char*>(malloc(28));
    data[0] = 0x1C;
    data[1] = 0x90;
-   data[2] = 0x00;
-   data[3] = 0x00;
-   memset(&data[4], 0x00, 16);
+   memcpy(data + 2, &len, 2);
+   memset(data + 4, 0x00, 16);
    data[20] = 0x00;
    data[21] = 0x00;
    data[22] = 0x00;
@@ -153,6 +155,14 @@ std::shared_ptr<Frame> Frame::parse(char* buf, size_t cb)
       return nullptr;
    }
 
+   uint8_t version = buf[0];
+   uint8_t flags = ((version<<4) & 0xF0) | ((buf[1]>>4) & 0x0F);   
+   version = (version >> 4) & 0x0F;
+
+   uint16_t n;
+   memcpy(&n, buf+2, 2);
+   
+   n = ntohs(n);
      
 
 
