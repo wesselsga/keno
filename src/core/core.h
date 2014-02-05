@@ -32,6 +32,7 @@
 #include <windows.h>
 #endif
 
+#include "uuid.h"
 #include "convert.h"
 #include "file.h"
 #include "trace.h"

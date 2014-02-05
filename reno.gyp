@@ -11,12 +11,14 @@
             './src/core/core.h',
             './src/core/convert.h',
             './src/core/convert.cc',
+            './src/core/file.h',
+            './src/core/file.cc'
             './src/core/stopwatch.h',
             './src/core/stopwatch.cc',
             './src/core/trace.h',
             './src/core/trace.cc',
-            './src/core/file.h',
-            './src/core/file.cc'
+            './src/core/uuid.h',
+            './src/core/uuid.cc'
          ],
 
          'include_dirs+': [
@@ -26,9 +28,15 @@
       {
          'target_name': 'net',
          'type': 'static_library',
+
+         'include_dirs+': [
+            './src/core',
+         ],
             
          'sources': [
             './src/net/net.h',
+            './src/net/mesh.h',
+            './src/net/mesh.cc'
          ],		
       },
 
@@ -138,10 +146,12 @@
          'dependencies': [
             ':core',
             ':gfx',
+            ':net'
          ],
          
          'include_dirs+': [
             './src/core',
+            './src/net',
             './src/gfx'
          ],
             

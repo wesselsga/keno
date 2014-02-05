@@ -101,8 +101,6 @@ int32_t Channel::run(const std::string& id)
 			}
 #endif
 
-			//::Sleep(1);	
-
 			ctx->clear();
 
 			ctx->swapBuffers();	
@@ -149,7 +147,7 @@ void Channel::iothread(void* arg)
 
 	uv_pipe_t pipe = {0};
 
-	auto loop = uv_default_loop();//uv_loop_new();
+	auto loop = uv_default_loop();
 
 	if (uv_guess_handle(1) == UV_NAMED_PIPE)
 	{
@@ -172,6 +170,4 @@ void Channel::iothread(void* arg)
 	uv_idle_start(&idler, wait_for_a_while);
 
 	uv_run(loop, UV_RUN_DEFAULT);
-
-	//uv_loop_delete(loop);
 }

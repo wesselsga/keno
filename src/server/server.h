@@ -1,6 +1,7 @@
 #pragma once
 
 #include <core.h>
+#include <net.h>
 #include <gfx.h>
 
 #include <string>
@@ -40,4 +41,5 @@ private:
 	
 	std::mutex _lock;
 	std::weak_ptr<Server> _self;
+
 };

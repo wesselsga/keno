@@ -1,6 +1,5 @@
-#ifndef __NET_H__
-#define __NET_H__
+#pragma once
 
+#include "core.h"
 
-
-#endif //  __NET_H__
+#include "mesh.h"
