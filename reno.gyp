@@ -191,10 +191,16 @@
                ],
                
                'link_settings': {
-                   'ldflags': ['-L/opt/vc/lib -L../deps/lib/linux/Release'],						
-                   'libraries': [ '-lfreeimage -lbcm_host -lEGL -lGLESv2 -luv' ]
+                   'ldflags': ['-L../deps/lib/linux/Release'],						
+                   'libraries': [ '-lfreeimage -luv' ]
                }
-            }]
+            }],
+
+            # for Raspberry PI
+            ['device=="raspi"', {
+               'ldflags': ['-L/opt/vc/lib -L../deps/lib/linux/Release'],						
+               'libraries': [ '-lbcm_host -lEGL -lGLESv2' ]              
+            }],
             
          ] # conditions
       
