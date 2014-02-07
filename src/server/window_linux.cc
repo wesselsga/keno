@@ -22,7 +22,7 @@ std::shared_ptr<x11::Window> x11::Window::create(
 
    int                     depth;
     XSetWindowAttributes    frame_attributes;
-    Window                  frame_window;
+    ::Window                frame_window;
     XFontStruct             *fontinfo;
     XGCValues               gr_values;
     GC                      graphical_context;
