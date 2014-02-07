@@ -33,20 +33,20 @@ std::shared_ptr<x11::Window> x11::Window::create(
     int                     hello_string_length = strlen(hello_string);
 
     win->_display = XOpenDisplay(NULL);
-    win->_visual = DefaultVisual(display, 0);
-    depth  = DefaultDepth(display, 0);
+    win->_visual = DefaultVisual(win->_display, 0);
+    depth  = DefaultDepth(win->_display, 0);
     
-    frame_attributes.background_pixel = XWhitePixel(display, 0);
+    frame_attributes.background_pixel = XWhitePixel(win->_display, 0);
     
     // create the application window
-    frame_window = XCreateWindow(display, XRootWindow(display, 0),
+    frame_window = XCreateWindow(win->_display, XRootWindow(win->_display, 0),
                                  0, 0, 400, 400, 5, depth,
-                                 InputOutput, visual, CWBackPixel,
+                                 InputOutput, win->_visual, CWBackPixel,
                                  &frame_attributes);
     
-    XStoreName(display, frame_window, "Hello World Example");
+    XStoreName(win->_display, frame_window, "Hello World Example");
     
-    XSelectInput(display, frame_window, ExposureMask | StructureNotifyMask);
+    XSelectInput(win->_display, frame_window, ExposureMask | StructureNotifyMask);
 
     //fontinfo = XLoadQueryFont(display, "10x20");
     //gr_values.font = fontinfo->fid;
@@ -54,7 +54,7 @@ std::shared_ptr<x11::Window> x11::Window::create(
     //graphical_context = XCreateGC(display, frame_window, 
     //                              GCFont+GCForeground, &gr_values);
     
-    XMapWindow(display, frame_window);
+    XMapWindow(win->_display, frame_window);
 
     
     return win;

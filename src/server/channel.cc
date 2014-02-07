@@ -11,6 +11,7 @@
 #ifdef _RASPI
 #include "window_raspi.h"
 #else
+#include "window_linux.h"
 #endif
 #endif
 
@@ -87,6 +88,10 @@ int32_t Channel::run(const std::string& id)
       auto window = rpi::Window::create();
 
 		ctx = gfx::Context::create(window->handle());
+#else
+ 
+     auto window = x11::Window::create(title.str(), channel);
+
 #endif
 
 #endif
@@ -107,6 +112,16 @@ int32_t Channel::run(const std::string& id)
 				channel->close();
 				break;
 			}
+#else
+#ifndef _RASPI
+                        if (window->pump() < 0)
+                        {
+                            channel->close();
+                            break;
+                        }
+#endif
+
+
 #endif
 
 			ctx->clear();
