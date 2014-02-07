@@ -191,7 +191,7 @@
                ],
                
                'link_settings': {
-                   'ldflags': ['-L/opt/vc/lib -L../deps/lib/rpi/Release'],						
+                   'ldflags': ['-L/opt/vc/lib -L../deps/lib/linux/Release'],						
                    'libraries': [ '-lfreeimage -lbcm_host -lEGL -lGLESv2 -luv' ]
                }
             }]

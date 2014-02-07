@@ -31,18 +31,23 @@ private:
 class Frame
 {
 public:
+   Frame(const Uuid&);
+
    virtual ~Frame();
    
-   static std::shared_ptr<Frame> parse(char*, size_t);
+   static std::shared_ptr<Frame> parse(const char*, size_t);
+
+   const Uuid& node() const { return _node; }
 
 private:
 
    uint8_t  _version;
    uint8_t  _flags;
    uint16_t _length;
-   Uuid     _nid;
-   uint32_t _mid;
-   uint32_t _seq;
+   Uuid     _node;
+   uint32_t _msgid;
+   uint32_t _seqno;
+   
 
 };
 

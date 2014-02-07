@@ -24,7 +24,7 @@ static void recv_packet(uv_udp_t* handle,
    {
       auto frame = Frame::parse(buf->base, nread);
 
-      LOG(VERBOSE) << "mesh: pkt - " << std::string(buf->base, nread);
+      LOG(VERBOSE) << "mesh: frame (size" << nread << ")";
    }
 
    free(buf->base);
@@ -113,15 +113,33 @@ bool Node::send(Frame*)
    data[0] = 0x1C;
    data[1] = 0x90;
    memcpy(data + 2, &len, 2);
-   memset(data + 4, 0x00, 16);
-   data[20] = 0x00;
-   data[21] = 0x00;
-   data[22] = 0x00;
-   data[23] = 0x00;
-   data[24] = 0x00;
-   data[25] = 0x00;
-   data[26] = 0x00;
-   data[27] = 0x00;
+
+   uint32_t d1 = htonl(_id.data1());
+   uint32_t d2 = htonl(_id.data2());
+   uint32_t d3 = htonl(_id.data3());
+   uint32_t d4 = htonl(_id.data4());
+
+   if (htonl(47) != 47) 
+   {
+      uint32_t tmp = d1;
+      d1 = d4;
+      d4 = tmp;
+      tmp = d2;
+      d2 = d3;
+      d3 = tmp;
+   }
+   memcpy(data + 4, &d1, 4);
+   memcpy(data + 8, &d2, 4);
+   memcpy(data + 12, &d3, 4);
+   memcpy(data + 16, &d4, 4);
+
+   uint32_t msgid = 0x00AA00FF;
+   msgid = htonl(msgid);
+   memcpy(data + 20, &msgid, 4);
+   
+   uint32_t seqno = 0x00BB00EE;
+   seqno = htonl(seqno);
+   memcpy(data + 24, &seqno, 4);
 
    send_req->data = data;
 
@@ -141,11 +159,15 @@ bool Node::send(Frame*)
 }
 
 
+Frame::Frame(const Uuid& node) : _node(node)
+{
+}
+
 Frame::~Frame()
 {
 }
 
-std::shared_ptr<Frame> Frame::parse(char* buf, size_t cb)
+std::shared_ptr<Frame> Frame::parse(const char* buf, size_t cb)
 {
    if (!buf || !cb){
       return nullptr;
@@ -155,16 +177,58 @@ std::shared_ptr<Frame> Frame::parse(char* buf, size_t cb)
       return nullptr;
    }
 
-   uint8_t version = buf[0];
-   uint8_t flags = ((version<<4) & 0xF0) | ((buf[1]>>4) & 0x0F);   
-   version = (version >> 4) & 0x0F;
+   const char* p = buf;
 
-   uint16_t n;
-   memcpy(&n, buf+2, 2);
+   // copy version and control flags
+   uint8_t version = ((*p >> 4) & 0x0F);
+   uint8_t flags = ((*p << 4) & 0xF0) | ((*(p+1) >> 4) & 0x0F);  
+
+   // we only support version 0x01
+   if (version != 0x01){
+      return nullptr;
+   }
    
-   n = ntohs(n);
-     
+   // copy payload length
+   uint16_t len;
+   memcpy(&len, p + 2, 2);
+   len = ntohs(len);
+   
+   uint32_t d1,d2,d3,d4;
+   memcpy(&d1, p + 4, 4);
+   memcpy(&d2, p + 8, 4);
+   memcpy(&d3, p + 12, 4);
+   memcpy(&d4, p + 16, 4);
+      
+   d1 = ntohl(d1);
+   d2 = ntohl(d2);
+   d3 = ntohl(d3);
+   d4 = ntohl(d4);
 
+   // are we little-endian?
+   if (htonl(47) != 47) 
+   {
+      uint32_t tmp = d1;
+      d1 = d4;
+      d4 = tmp;
+      tmp = d2;
+      d2 = d3;
+      d3 = tmp;
+   }
+         
+   // create a frame with node-id
+   auto frame = std::make_shared<Frame>(Uuid(d1,d2,d3,d4));
 
-   return nullptr;
+   frame->_version = version;
+   frame->_flags = flags;
+   frame->_length = len;   
+   
+   memcpy(&frame->_msgid, p + 20, 4);
+   frame->_msgid = ntohl(frame->_msgid);
+   
+   memcpy(&frame->_seqno, p + 24, 4);   
+   frame->_seqno = ntohl(frame->_seqno);
+   
+   LOG(VERBOSE) << frame->node();
+
+   return frame;
 }

@@ -16,10 +16,7 @@ int32_t Server::run()
    LOG(INFO) << "server: starting " 
 			<< PRODUCT << " (v" << VERSION_STR << ") ...";
 
-   Uuid uuid;
-   LOG(INFO) << uuid;
-	
-	std::shared_ptr<Server> server = std::make_shared<Server>(_priv{});
+  	std::shared_ptr<Server> server = std::make_shared<Server>(_priv{});
 
 	server->_self = server;
 
@@ -35,7 +32,13 @@ int32_t Server::run()
 		server->_hosts.push_back(host);	
 	}
 
-   Uuid nid;
+   uint32_t d1 = 0x00112233;
+   uint32_t d2 = 0x44556677;
+   uint32_t d3 = 0x8899AABB;
+   uint32_t d4 = 0xCCDDEEFF;
+
+
+   Uuid nid(d1,d2,d3,d4);
    mesh::Node node(nid);	
 
    node.open(loop);   
