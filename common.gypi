@@ -1,5 +1,14 @@
 {
+	'variables': {
+		'device%': 'any',      # 'raspi' for Raspberry PI
+	},
+
 	'target_defaults': {
+
+      'defines': [
+		   'ARCH="<(arch)"',
+			'PLATFORM="<(OS)"'
+      ],
 	
 		'conditions': [
 		
@@ -8,7 +17,7 @@
 			}],		
 		
 			['OS=="win"', {
-				'sources/': [['exclude', '_rpi\\.cc$|_rpi\\.h$']],
+				'sources/': [['exclude', '_linux\\.cc$|_linux\\.h$']],
 				
 				'msvs_configuration_attributes': {
 					'OutputDirectory': '.\\build\\$(ConfigurationName)\\$(Platform)\\',
@@ -22,21 +31,30 @@
 					} # VCCLCompilerTool
 				} # msvs_settings
 			}],
+
 			['arch=="x64"', {
 				'msvs_configuration_platform': 'x64'				
 			}],
 			
-			['OS!="win"', { 'sources/': [['exclude', '_win\\.cc$|_win\\.h$']]}]
+			['OS!="win"', { 
+            'sources/': [['exclude', '_win\\.cc$|_win\\.h$']]        
+         }],
+
+         # for Raspberry PI
+         ['device=="raspi"', {
+            'defines': ['_RASPI'],
+         }],
+
+         # anything other than Raspberry PI
+         ['device!="raspi"', {
+            'sources/': [['exclude', '_raspi\\.cc$|_raspi\\.h$|_egl\\.cc$|_egl\\.cc$']],
+         }],
 			
 		], # conditions		
 	
 		'configurations': {
 			'Release': {
-				'defines': [
-					'ARCH="<(arch)"',
-					'PLATFORM="<(OS)"'
-				],
-				
+								
 				'conditions': [
 					['OS=="win"', {
 						'defines': ['_WIN32'],
@@ -66,8 +84,6 @@
 			'Debug': {
 				'defines': [
 					'_DEBUG',
-					'ARCH="<(arch)"',
-					'PLATFORM="<(OS)"'
 				],
 				
 				'conditions': [

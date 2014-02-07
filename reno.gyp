@@ -12,7 +12,7 @@
             './src/core/convert.h',
             './src/core/convert.cc',
             './src/core/file.h',
-            './src/core/file.cc'
+            './src/core/file.cc',
             './src/core/stopwatch.h',
             './src/core/stopwatch.cc',
             './src/core/trace.h',
@@ -55,7 +55,9 @@
             './src/gfx/gfx.cc',
             './src/gfx/context.h',
             './src/gfx/context.cc',
-                './src/gfx/context_egl.cc',						
+            './src/gfx/context_win.h',
+            './src/gfx/context_win.cc',
+            './src/gfx/context_egl.cc',						
             './src/gfx/context_egl.h',
             './src/gfx/image.h',
             './src/gfx/image.cc',
@@ -67,11 +69,9 @@
          'conditions': [
             ['OS=="win"', {
                'sources': [
-                  './src/gfx/context_win.h',
-                  './src/gfx/context_win.cc',
                    './src/gfx/glew/glew.c',					
                   './src/gfx/glew/GL/glew.h',
-                    './src/gfx/glew/GL/wglew.h'
+                  './src/gfx/glew/GL/wglew.h'
                ],
                
                'sources/': [['exclude', '_egl\\.cc$|_egl\\.h$']],
@@ -166,8 +166,8 @@
             './src/server/main.cc',
             './src/server/window_win.h',
             './src/server/window_win.cc',
-            './src/server/window_rpi.h',
-            './src/server/window_rpi.cc'
+            './src/server/window_raspi.h',
+            './src/server/window_raspi.cc'
          ],
          
          'conditions': [
