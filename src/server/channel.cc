@@ -83,9 +83,11 @@ int32_t Channel::run(const std::string& id)
 		window->update();
 #else
 
-		auto window = rpi::Window::create();
+#ifdef _RASPI
+      auto window = rpi::Window::create();
 
 		ctx = gfx::Context::create(window->handle());
+#endif
 
 #endif
 		
