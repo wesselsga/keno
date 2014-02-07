@@ -6,8 +6,8 @@
 	'target_defaults': {
 
       'defines': [
-		   'ARCH="<(arch)"',
-			'PLATFORM="<(OS)"'
+		   'ARCH=<(arch)',
+			'PLATFORM=<(OS)'
       ],
 	
 		'conditions': [

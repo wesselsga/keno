@@ -1,10 +1,10 @@
 #include "gfx.h"
 #include "shader.h"
 
-#ifdef _WIN32
-#include <GL/glew.h>
-#else
+#ifdef _RASPI
 #include <GLES2/gl2.h>
+#else
+#include <GL/glew.h>
 #endif
 
 using namespace gfx;
