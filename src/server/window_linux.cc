@@ -4,6 +4,8 @@
 
 x11::Window::Window(const _ctx&)
 {
+   _display = nullptr;
+   _visual = nullptr;
 }
 
 x11::Window::~Window()
@@ -30,8 +32,8 @@ std::shared_ptr<x11::Window> x11::Window::create(
     char                    hello_string[] = "Hello World";
     int                     hello_string_length = strlen(hello_string);
 
-    display = XOpenDisplay(NULL);
-    visual = DefaultVisual(display, 0);
+    win->_display = XOpenDisplay(NULL);
+    win->_visual = DefaultVisual(display, 0);
     depth  = DefaultDepth(display, 0);
     
     frame_attributes.background_pixel = XWhitePixel(display, 0);
@@ -60,6 +62,10 @@ std::shared_ptr<x11::Window> x11::Window::create(
 
 int32_t x11::Window::pump()
 {
+   if (!_display){
+      return 0;
+   }
+
    XEvent evnt;
    XFontStruct* fontinfo;
     
@@ -69,7 +75,7 @@ int32_t x11::Window::pump()
     
    for (;;) 
    {
-      XNextEvent(display, (XEvent*)&evnt);
+      XNextEvent(_display, (XEvent*)&evnt);
       
       switch (evnt.type ) 
       {
