@@ -166,6 +166,8 @@
             './src/server/main.cc',
             './src/server/window_win.h',
             './src/server/window_win.cc',
+            './src/server/window_linux.h',
+            './src/server/window_linux.cc',
             './src/server/window_raspi.h',
             './src/server/window_raspi.cc'
          ],
@@ -174,7 +176,8 @@
             ['OS=="win"', {
                               
                'link_settings':  {
-                  'libraries': [ '-lkernel32.lib;psapi.lib;user32.lib;gdi32.lib;advapi32.lib;iphlpapi.lib;opengl32.lib;ws2_32.lib;winmm.lib;FreeImage.lib;libuv.lib' ]
+                  'libraries': [ '-lkernel32.lib;psapi.lib;user32.lib;gdi32.lib;'
+                  'advapi32.lib;iphlpapi.lib;opengl32.lib;ws2_32.lib;winmm.lib;FreeImage.lib;libuv.lib' ]
                },
                
             }],
@@ -189,7 +192,7 @@
                
                'link_settings': {
                    'ldflags': ['-L../deps/lib/linux/Release'],						
-                   'libraries': [ '-lfreeimage -luv' ]
+                   'libraries': [ '-lfreeimage -luv -lX11' ]
                }
             }],
 
