@@ -2,22 +2,20 @@
 #include "channel.h"
 #include "window_linux.h"
 
-using namespace win;
-
-Window::Window(const _ctx&)
+x11::Window::Window(const _ctx&)
 {
 }
 
-Window::~Window()
+x11::Window::~Window()
 {
 	
 }
 
-std::shared_ptr<Window> Window::create(
+std::shared_ptr<x11::Window> x11::Window::create(
          const std::string& title,
 			const std::weak_ptr<Channel>& channel)
 {
-	std::shared_ptr<Window> win(std::make_shared<Window>(_ctx{}));
+	std::shared_ptr<x11::Window> win(std::make_shared<x11::Window>(_ctx{}));
 	win->_channel = channel;
 
 	LOG(VERBOSE) << "X11: creating native window...";
@@ -60,7 +58,7 @@ std::shared_ptr<Window> Window::create(
     return win;
 }
 
-int32_t Window::pump()
+int32_t x11::Window::pump()
 {
    XEvent evnt;
    XFontStruct* fontinfo;

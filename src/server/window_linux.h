@@ -4,7 +4,7 @@ class Channel;
 
 #include <X11/Xlib.h>
 
-namespace win {
+namespace x11 {
 
 class Window
 {
@@ -25,11 +25,6 @@ private:
 	Window(const Window&)=delete;
 	const Window& operator=(const Window&) = delete;
 
-	static LRESULT CALLBACK _winProc(HWND,UINT,WPARAM,LPARAM);
-	bool winProc(uint32_t, WPARAM, LPARAM, LRESULT&);
-
-	bool fullScreen(uint32_t, uint32_t);
-	
 	std::weak_ptr<Channel> _channel;
 	
    Display* _display;
