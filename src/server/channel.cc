@@ -8,7 +8,13 @@
 #ifdef _WIN32
 #include "window_win.h"
 #else
-#include "window_rpi.h"
+#ifdef _RASPI
+#include "window_raspi.h"
+#else
+#endif
+#endif
+
+#ifndef _WIN32
 #include <unistd.h>
 #endif
 
