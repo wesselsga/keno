@@ -3,7 +3,7 @@
 #include <bcm_host.h>
 #include <EGL/egl.h>
 
-#include "window_rpi.h"
+#include "window_raspi.h"
 
 using namespace rpi;
 

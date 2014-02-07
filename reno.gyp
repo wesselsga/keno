@@ -185,9 +185,6 @@
                ],
             
                'include_dirs+': [
-                   '/opt/vc/include',
-                   '/opt/vc/include/interface/vcos/pthreads',
-                  '/opt/vc/include/interface/vmcs_host/linux'
                ],
                
                'link_settings': {
@@ -198,7 +195,13 @@
 
             # for Raspberry PI
             ['device=="raspi"', {
-               'ldflags': ['-L/opt/vc/lib -L../deps/lib/linux/Release'],						
+               'include_dirs+': [
+                  '/opt/vc/include',
+                  '/opt/vc/include/interface/vcos/pthreads',
+                  '/opt/vc/include/interface/vmcs_host/linux'
+               ],
+               
+               'ldflags': ['-L/opt/vc/lib'],						
                'libraries': [ '-lbcm_host -lEGL -lGLESv2' ]              
             }],
             
