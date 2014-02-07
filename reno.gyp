@@ -131,7 +131,7 @@
                ],
                
                'link_settings': {
-                   'ldflags': ['-L/opt/vc/lib -L../deps/lib/rpi/Release'],						
+                   'ldflags': ['-L/opt/vc/lib -L../deps/lib/linux/Release'],						
                    'libraries': [ '-luv -lpthread -lrt' ]
                }
             }]
