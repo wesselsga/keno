@@ -2,26 +2,30 @@
 #include "channel.h"
 #include "window_linux.h"
 
-x11::Window::Window(const _ctx&)
+using namespace screen;
+
+X11Window::X11Window(const _ctx&, 
+      const std::weak_ptr<Channel>& channel)
+    : Window(channel) 
 {
    _display = nullptr;
    _visual = nullptr;
    _frame = nullptr;
 }
 
-x11::Window::~Window()
+X11Window::~X11Window()
 {
 	
 }
 
-std::shared_ptr<x11::Window> x11::Window::create(
+std::shared_ptr<X11Window> X11Window::create(
          const std::string& title,
 			const std::weak_ptr<Channel>& channel)
 {
-	std::shared_ptr<x11::Window> win(std::make_shared<x11::Window>(_ctx{}));
-	win->_channel = channel;
-
-	LOG(VERBOSE) << "x11: creating native window...";
+	std::shared_ptr<X11Window> win(
+            std::make_shared<X11Window>(_ctx{}, channel));
+	
+   LOG(VERBOSE) << "x11: creating native window...";
 
    int                     depth;
    XSetWindowAttributes    frame_attributes;
@@ -56,7 +60,7 @@ std::shared_ptr<x11::Window> x11::Window::create(
     return win;
 }
 
-int32_t x11::Window::pump()
+int32_t X11Window::pump()
 {
    if (!_display){
       return 0;
@@ -102,4 +106,14 @@ int32_t x11::Window::pump()
    return 0;
 }
 
+void X11Window::show() const
+{
+}
 
+void X11Window::update() const
+{
+}
+
+void X11Window::close()
+{
+}

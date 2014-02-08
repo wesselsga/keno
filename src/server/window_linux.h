@@ -1,38 +1,38 @@
 #pragma once
 
-class Channel;
-
+#include "window.h"
 #include <X11/Xlib.h>
 
-namespace x11 {
+namespace screen {
 
-class Window
+class X11Window : public Window
 {
 	struct _ctx { };
 public:
-	explicit Window(const _ctx&);
-	virtual ~Window();
+	explicit X11Window(const _ctx&, const std::weak_ptr<Channel>&);
+	virtual ~X11Window();
 
 	static std::shared_ptr<Window> create(
             const std::string&,
             const std::weak_ptr<Channel>&);
    
-	int32_t pump();
+   void*   handle() const { return _frame; }
+   void*   display() const { return _display; }
+	void    show() const;
+	void    update() const;
+	void    close();
 
-   void* display() const { return _display; }
+   int32_t pump();
 
 private:
 
-	Window()=delete;
-	Window(const Window&)=delete;
-	const Window& operator=(const Window&) = delete;
+	X11Window()=delete;
+	X11Window(const X11Window&)=delete;
+	const X11Window& operator=(const X11Window&) = delete;
 
-	std::weak_ptr<Channel> _channel;
-	
    Display* _display;
    Visual*  _visual;
    ::Window*  _frame;
-
 
 };
 
