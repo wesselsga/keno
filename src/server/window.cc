@@ -29,17 +29,14 @@ std::shared_ptr<screen::Window> screen::Window::create(
    std::shared_ptr<screen::Window> win;
 	
 #ifdef _WIN32
-
    win = Win32Window::create(title, channel);
-
 #else
 #ifdef _RASPI
+   win = BcmWindow::create(title, channel);
 #else
-
+   win = X11Window::create(title, channel);
 #endif
 #endif
-
-
 	
    return win;
 }
