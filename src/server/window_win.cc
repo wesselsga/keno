@@ -2,28 +2,30 @@
 #include "channel.h"
 #include "window_win.h"
 
-using namespace win;
+using namespace screen;
 
-Window::Window(const _ctx&) : _hwnd(0)
+Win32Window::Win32Window(const _ctx&, 
+      const std::weak_ptr<Channel>& channel) 
+      : Window(channel), _hwnd(0) 
 {
 	_fullscreen = false;
 }
 
-Window::~Window()
+Win32Window::~Win32Window()
 {
 	if (::IsWindow(_hwnd)) {
 		::CloseWindow(_hwnd);
 	}
 }
 
-std::shared_ptr<Window> Window::create(
+std::shared_ptr<Win32Window> Win32Window::create(
          const std::string& title,
 			const std::weak_ptr<Channel>& channel)
 {
-	std::shared_ptr<Window> win(std::make_shared<Window>(_ctx{}));
-	win->_channel = channel;
-
-	LOG(VERBOSE) << "win32: creating native window...";
+	std::shared_ptr<Win32Window> win(
+         std::make_shared<Win32Window>(_ctx{}, channel));
+	
+   LOG(VERBOSE) << "win32: creating native window...";
 
 	const wchar_t* clsname = L"_mainw";
 
@@ -84,7 +86,7 @@ std::shared_ptr<Window> Window::create(
 	return win;
 }
 
-int32_t Window::pump()
+int32_t Win32Window::pump()
 {
 	int32_t ret=0;
 
@@ -105,23 +107,27 @@ int32_t Window::pump()
 	return ret;
 }
 
-void Window::show() const
+void Win32Window::show() const
 {
-	::ShowWindow(handle(), SW_SHOWNORMAL);
+	::ShowWindow(_hwnd, SW_SHOWNORMAL);
 }
 
-void Window::update() const
+void Win32Window::update() const
 {
-	::UpdateWindow(handle());
+	::UpdateWindow(_hwnd);
 }
 
-LRESULT CALLBACK Window::_winProc(HWND hwnd,UINT msg,WPARAM wp,LPARAM lp)
+void Win32Window::close()
 {
-	Window* pwin;
+}
+
+LRESULT CALLBACK Win32Window::_winProc(HWND hwnd,UINT msg,WPARAM wp,LPARAM lp)
+{
+	Win32Window* pwin;
 	if (msg == WM_NCCREATE)
 	{
 		auto cs = reinterpret_cast<CREATESTRUCT*>(lp);		
-		pwin = reinterpret_cast<Window*>(cs->lpCreateParams);
+		pwin = reinterpret_cast<Win32Window*>(cs->lpCreateParams);
 		if (pwin)
 		{
 			pwin->_hwnd = hwnd;
@@ -130,7 +136,7 @@ LRESULT CALLBACK Window::_winProc(HWND hwnd,UINT msg,WPARAM wp,LPARAM lp)
 	}
 	else
 	{
-		pwin = (Window*)::GetWindowLongPtr(hwnd,GWLP_USERDATA);		
+		pwin = reinterpret_cast<Win32Window*>(::GetWindowLongPtr(hwnd,GWLP_USERDATA));		
 	}
 
 	if (pwin)
@@ -144,7 +150,7 @@ LRESULT CALLBACK Window::_winProc(HWND hwnd,UINT msg,WPARAM wp,LPARAM lp)
 	return ::DefWindowProc(hwnd, msg ,wp, lp);		
 }
 
-bool Window::winProc(uint32_t msg, WPARAM wp, LPARAM, LRESULT& result)
+bool Win32Window::winProc(uint32_t msg, WPARAM wp, LPARAM, LRESULT& result)
 {
 	result = 0;
 
@@ -189,7 +195,7 @@ bool Window::winProc(uint32_t msg, WPARAM wp, LPARAM, LRESULT& result)
 	return false;
 }
 
-bool Window::fullScreen(uint32_t width, uint32_t height)
+bool Win32Window::fullScreen(uint32_t width, uint32_t height)
 {
 	DEVMODE mode;
 	memset(&mode, 0, sizeof(mode));

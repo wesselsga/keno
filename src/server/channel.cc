@@ -3,17 +3,7 @@
 #include "../version.h"
 
 #include "stopwatch.h"
-
-
-#ifdef _WIN32
-#include "window_win.h"
-#else
-#ifdef _RASPI
-#include "window_raspi.h"
-#else
-#include "window_linux.h"
-#endif
-#endif
+#include "window.h"
 
 #ifndef _WIN32
 #include <unistd.h>
@@ -75,27 +65,25 @@ int32_t Channel::run(const std::string& id)
       std::stringstream title;
       title << PRODUCT << " | " << "channel: " << channel->id();
 
-#ifdef _WIN32
-		auto window = win::Window::create(title.str(), channel);
+      auto window = screen::Window::create(title.str(), channel);
 
+#ifdef _WIN32
+		
 		ctx = gfx::Context::create(window->handle());
 
-		window->show();
-		window->update();
 #else
 
 #ifdef _RASPI
-      auto window = rpi::Window::create();
-
+      
 		ctx = gfx::Context::create(window->handle());
 #else
  
-     auto window = x11::Window::create(title.str(), channel);
-
 #endif
 
 #endif
-		
+		     
+		window->show();
+		window->update();
 
 		LOG(DEBUG) << "channel: staring rendering loop ...";
 
@@ -106,23 +94,12 @@ int32_t Channel::run(const std::string& id)
 
 		for (;;)
 		{
-#ifdef _WIN32
-			if (window->pump() < 0)
+
+         if (window->pump() < 0)
 			{
 				channel->close();
 				break;
 			}
-#else
-#ifndef _RASPI
-                        if (window->pump() < 0)
-                        {
-                            channel->close();
-                            break;
-                        }
-#endif
-
-
-#endif
 
 			ctx->clear();
 

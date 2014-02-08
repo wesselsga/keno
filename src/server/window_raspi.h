@@ -1,23 +1,32 @@
 #pragma once
 
-namespace rpi {
+#include "window.h"
 
-class Window
+namespace screen {
+
+//
+// BCM Host window implementation for Raspberry PI
+//
+class BcmWindow : public Window
 {
+   struct _ctx { };
 public:
-	virtual ~Window();
+   explicit BcmWindow(const _ctx&,const std::weak_ptr<Channel>&);	
+	virtual ~BcmWindow();
 
-	static std::shared_ptr<Window> create();
+	static std::shared_ptr<BcmWindow> create();
 
-	void* handle() const { return _eglw; }
-	//void show() const;
-	//void update() const;
-
-	void wait();
+	void*   handle() const { return _eglw; }
+   void*   display() const { return nullptr; }
+	void    show() const;
+	void    update() const;
+	void    close();
+	int32_t pump();
 
 private:
-
-	Window();
+   BcmWindow()=delete;
+	BcmWindow(const Win32Window&)=delete;
+	const BcmWindow& operator=(const BcmWindow&) = delete;
 
 	void* _eglw;		
 

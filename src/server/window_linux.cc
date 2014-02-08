@@ -6,6 +6,7 @@ x11::Window::Window(const _ctx&)
 {
    _display = nullptr;
    _visual = nullptr;
+   _frame = nullptr;
 }
 
 x11::Window::~Window()
@@ -20,17 +21,14 @@ std::shared_ptr<x11::Window> x11::Window::create(
 	std::shared_ptr<x11::Window> win(std::make_shared<x11::Window>(_ctx{}));
 	win->_channel = channel;
 
-	LOG(VERBOSE) << "X11: creating native window...";
+	LOG(VERBOSE) << "x11: creating native window...";
 
    int                     depth;
-    XSetWindowAttributes    frame_attributes;
-    ::Window                frame_window;
-    XFontStruct             *fontinfo;
-    XGCValues               gr_values;
-    GC                      graphical_context;
-    XKeyEvent               event;
-    char                    hello_string[] = "Hello World";
-    int                     hello_string_length = strlen(hello_string);
+   XSetWindowAttributes    frame_attributes;
+   XFontStruct             *fontinfo;
+   XGCValues               gr_values;
+   GC                      graphical_context;
+   XKeyEvent               event;
 
     win->_display = XOpenDisplay(NULL);
     win->_visual = DefaultVisual(win->_display, 0);
@@ -39,22 +37,20 @@ std::shared_ptr<x11::Window> x11::Window::create(
     frame_attributes.background_pixel = XWhitePixel(win->_display, 0);
     
     // create the application window
-    frame_window = XCreateWindow(win->_display, XRootWindow(win->_display, 0),
-                                 0, 0, 400, 400, 5, depth,
-                                 InputOutput, win->_visual, CWBackPixel,
-                                 &frame_attributes);
+    win->_frame = XCreateWindow(win->_display, 
+               XRootWindow(win->_display, 0),
+               0, 0, 400, 400, 5, 
+               depth,
+               InputOutput, 
+               win->_visual, 
+               CWBackPixel,
+               &frame_attributes);
     
-    XStoreName(win->_display, frame_window, "Hello World Example");
+    XStoreName(win->_display, win->_frame, title.c_str());
     
-    XSelectInput(win->_display, frame_window, ExposureMask | StructureNotifyMask);
-
-    //fontinfo = XLoadQueryFont(display, "10x20");
-    //gr_values.font = fontinfo->fid;
-    //gr_values.foreground = XBlackPixel(display, 0);
-    //graphical_context = XCreateGC(display, frame_window, 
-    //                              GCFont+GCForeground, &gr_values);
+    XSelectInput(win->_display, win->_frame, ExposureMask | StructureNotifyMask);
     
-    XMapWindow(win->_display, frame_window);
+    XMapWindow(win->_display, win->_frame);
 
     
     return win;

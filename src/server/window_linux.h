@@ -19,6 +19,8 @@ public:
    
 	int32_t pump();
 
+   void* display() const { return _display; }
+
 private:
 
 	Window()=delete;
@@ -29,6 +31,7 @@ private:
 	
    Display* _display;
    Visual*  _visual;
+   ::Window*  _frame;
 
 
 };
