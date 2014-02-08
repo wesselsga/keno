@@ -7,7 +7,7 @@ class GlxContext : public Context
 public:
 	~GlxContext();
 
-	static std::shared_ptr<Context> create(void*);
+	static std::shared_ptr<Context> create(void*,void*);
 	
 	void bind();
 	void unbind();
@@ -19,6 +19,11 @@ private:
 	GlxContext();
 
    ::GLXContext _ctx;
+
+   void* _display
+   GLXDrawable _window;
+
+   void* 
 
 };
 

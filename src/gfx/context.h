@@ -7,7 +7,7 @@ class Context
 public:
 	virtual ~Context(){}
 
-	static std::shared_ptr<Context> create(void*);
+	static std::shared_ptr<Context> create(void*, void*);
 
 	virtual void bind()=0;
 	virtual void unbind()=0;

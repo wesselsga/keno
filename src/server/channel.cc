@@ -67,21 +67,8 @@ int32_t Channel::run(const std::string& id)
 
       auto window = screen::Window::create(title.str(), channel);
 
-#ifdef _WIN32
-		
-		ctx = gfx::Context::create(window->handle());
-
-#else
-
-#ifdef _RASPI
-      
-		ctx = gfx::Context::create(window->handle());
-#else
- 
-#endif
-
-#endif
-		     
+      ctx = gfx::Context::create(0, window->handle());
+      		     
 		window->show();
 		window->update();
 
@@ -101,7 +88,7 @@ int32_t Channel::run(const std::string& id)
 				break;
 			}
 
-			ctx->clear();
+         ctx->clear();
 
 			ctx->swapBuffers();	
 			++frame;
