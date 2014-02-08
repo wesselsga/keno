@@ -9,6 +9,7 @@ gyp_home="$in_dir/tools/gyp"
 --depth=. \
 -f make \
 --generator-output="$out_dir" \
--Darch=arm
+-Darch=arm \
+-Ddevice=raspi
 
 

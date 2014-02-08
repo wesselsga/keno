@@ -85,12 +85,15 @@
                ]
             }],	
 
-                ['OS=="linux"', {
+            ['device=="raspi"', {
                 'include_dirs+': [
                    '/opt/vc/include',
                   '/opt/vc/include/interface/vcos/pthreads',
-               ]
-            }]					
+               ],
+               
+               'sources/': [['exclude', 'context_linux.cc|context_linux.h']],
+
+            }],					
             
          ] # conditions
       },
@@ -196,7 +199,7 @@
                
                'link_settings': {
                    'ldflags': ['-L../deps/lib/linux/Release'],						
-                   'libraries': [ '-lfreeimage -luv -lX11' ]
+                   'libraries': [ '-lfreeimage -luv' ]
                }
             }],
 
@@ -208,9 +211,15 @@
                   '/opt/vc/include/interface/vmcs_host/linux'
                ],
                
+               'sources/': [['exclude', 'window_linux.cc|window_linux.h']],
+               
                'ldflags': ['-L/opt/vc/lib'],						
                'libraries': [ '-lbcm_host -lEGL -lGLESv2' ]              
             }],
+
+            ['OS=="linux" and device!="raspi"', {      
+               'libraries': [ '-lX11' ]
+            }],              
             
          ] # conditions
       

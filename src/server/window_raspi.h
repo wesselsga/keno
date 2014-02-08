@@ -14,7 +14,9 @@ public:
    explicit BcmWindow(const _ctx&,const std::weak_ptr<Channel>&);	
 	virtual ~BcmWindow();
 
-	static std::shared_ptr<BcmWindow> create();
+	static std::shared_ptr<BcmWindow> create(
+            const std::string&,
+            const std::weak_ptr<Channel>&);
 
 	void*   handle() const { return _eglw; }
    void*   display() const { return nullptr; }
@@ -25,7 +27,7 @@ public:
 
 private:
    BcmWindow()=delete;
-	BcmWindow(const Win32Window&)=delete;
+	BcmWindow(const BcmWindow&)=delete;
 	const BcmWindow& operator=(const BcmWindow&) = delete;
 
 	void* _eglw;		

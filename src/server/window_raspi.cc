@@ -3,7 +3,7 @@
 #include "window_raspi.h"
 
 #include <bcm_host.h>
-//#include <EGL/egl.h>
+#include <EGL/egl.h>
 
 
 using namespace screen;
@@ -19,7 +19,9 @@ BcmWindow::~BcmWindow()
 	delete ((EGL_DISPMANX_WINDOW_T*)_eglw);
 }
 
-std::shared_ptr<BcmWindow> BcmWindow::create()
+std::shared_ptr<BcmWindow> BcmWindow::create(
+            const std::string&,
+            const std::weak_ptr<Channel>& channel)
 {
 	LOG(VERBOSE) << "raspi: creating native window...";
 
@@ -44,7 +46,7 @@ std::shared_ptr<BcmWindow> BcmWindow::create()
    VC_RECT_T dst_rect;
    VC_RECT_T src_rect;
 
-	std::shared_ptr<BcmWindow>win(new BcmWindow());
+	std::shared_ptr<BcmWindow>win(new BcmWindow(_ctx{}, channel));
    
    dst_rect.x = width - 640;
    dst_rect.y = height - 480;
