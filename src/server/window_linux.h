@@ -12,11 +12,11 @@ public:
 	explicit X11Window(const _ctx&, const std::weak_ptr<Channel>&);
 	virtual ~X11Window();
 
-	static std::shared_ptr<Window> create(
+	static std::shared_ptr<X11Window> create(
             const std::string&,
             const std::weak_ptr<Channel>&);
    
-   void*   handle() const { return _frame; }
+   void*   handle() const { return reinterpret_cast<void*>(_frame); }
    void*   display() const { return _display; }
 	void    show() const;
 	void    update() const;
@@ -32,7 +32,7 @@ private:
 
    Display* _display;
    Visual*  _visual;
-   ::Window*  _frame;
+   ::Window  _frame;
 
 };
 

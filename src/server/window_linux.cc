@@ -10,7 +10,7 @@ X11Window::X11Window(const _ctx&,
 {
    _display = nullptr;
    _visual = nullptr;
-   _frame = nullptr;
+   _frame = 0;
 }
 
 X11Window::~X11Window()

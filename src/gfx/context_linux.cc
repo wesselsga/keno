@@ -1,8 +1,8 @@
 #include "gfx.h"
 
-#include "context_linux.h"
-
 #include <GL/glew.h>
+#include <GL/glxew.h>
+#include "context_linux.h"
 
 using namespace gfx;
 
@@ -22,12 +22,10 @@ std::shared_ptr<Context> GlxContext::create(void* native_display)
 
 void GlxContext::bind()
 {
-	wglMakeCurrent(_hdc, _hrc);
 }
 
 void GlxContext::unbind()
 {
-	wglMakeCurrent(NULL, NULL);
 }
 
 void GlxContext::clear()
@@ -37,7 +35,6 @@ void GlxContext::clear()
 
 void GlxContext::swapBuffers()
 {
-	::SwapBuffers(_hdc);
 }
 
 void GlxContext::finish()
