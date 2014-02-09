@@ -22,27 +22,26 @@ std::shared_ptr<X11Window> X11Window::create(
          const std::string& title,
 			const std::weak_ptr<Channel>& channel)
 {
-	std::shared_ptr<X11Window> win(
-            std::make_shared<X11Window>(_ctx{}, channel));
+   std::shared_ptr<X11Window> win(
+   std::make_shared<X11Window>(_ctx{}, channel));
 	
    LOG(VERBOSE) << "x11: creating native window...";
 
-   int                     depth;
+   int32_t depth;
    XSetWindowAttributes    frame_attributes;
-   XFontStruct             *fontinfo;
-   XGCValues               gr_values;
-   GC                      graphical_context;
-   XKeyEvent               event;
+   XFontStruct* fontinfo;
+   XGCValues gr_values;
+   XKeyEvent event;
 
-    win->_display = XOpenDisplay(NULL);
-    win->_visual = DefaultVisual(win->_display, 0);
-    depth  = DefaultDepth(win->_display, 0);
+   win->_display = XOpenDisplay(NULL);
+   win->_visual = DefaultVisual(win->_display, 0);
+   depth  = DefaultDepth(win->_display, 0);
     
-    frame_attributes.background_pixel = XWhitePixel(win->_display, 0);
+   frame_attributes.background_pixel = XWhitePixel(win->_display, 0);
     
-    // create the application window
-    win->_frame = XCreateWindow(win->_display, 
-               XRootWindow(win->_display, 0),
+   // create the application window
+   win->_frame = XCreateWindow(win->_display, 
+               RootWindow(win->_display, 0),
                0, 0, 400, 400, 5, 
                depth,
                InputOutput, 
@@ -50,14 +49,13 @@ std::shared_ptr<X11Window> X11Window::create(
                CWBackPixel,
                &frame_attributes);
     
-    XStoreName(win->_display, win->_frame, title.c_str());
+   XStoreName(win->_display, win->_frame, title.c_str());
     
-    XSelectInput(win->_display, win->_frame, ExposureMask | StructureNotifyMask);
+   XSelectInput(win->_display, win->_frame, ExposureMask | StructureNotifyMask);
     
-    XMapWindow(win->_display, win->_frame);
+   XMapWindow(win->_display, win->_frame);
 
-    
-    return win;
+   return win;
 }
 
 int32_t X11Window::pump()
