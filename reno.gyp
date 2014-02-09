@@ -218,7 +218,7 @@
             }],
 
             ['OS=="linux" and device!="raspi"', {      
-               'libraries': [ '-lX11' ]
+               'libraries': [ '-lX11 -lGL -lGLEW' ]
             }],              
             
          ] # conditions

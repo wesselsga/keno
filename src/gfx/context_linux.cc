@@ -1,7 +1,5 @@
 #include "gfx.h"
 
-#include <GL/glew.h>
-#include <GL/glxew.h>
 #include "context_linux.h"
 
 using namespace gfx;

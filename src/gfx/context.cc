@@ -3,7 +3,11 @@
 #ifdef _WIN32
 #include "context_win.h"
 #else
+#ifdef _RASPI
 #include "context_egl.h"
+#else
+#include "context_linux.h"
+#endif
 #endif
 
 using namespace gfx;

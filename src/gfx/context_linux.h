@@ -1,5 +1,8 @@
 #pragma once
 
+#include <GL/glew.h>
+#include <GL/glxew.h>
+
 namespace gfx {
 
 class GlxContext : public Context
@@ -20,10 +23,9 @@ private:
 
    ::GLXContext _ctx;
 
-   void* _display
+   Display* _display;
    GLXDrawable _window;
 
-   void* 
 
 };
 
