@@ -74,6 +74,8 @@ std::shared_ptr<Context> GlxContext::create(
 
    bindProc(display, win, ctx->_ctx);
    
+   //glewExperimental=true;
+   
    GLenum err = glewInit();
    if (err != GLEW_OK)
    {
@@ -104,6 +106,8 @@ void GlxContext::clear()
 void GlxContext::swapBuffers()
 {
    glXSwapBuffers(_display, _window);
+   
+   usleep(1000);
 }
 
 void GlxContext::finish()

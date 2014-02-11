@@ -83,7 +83,7 @@ __call::~__call()
 		//ASSERT(0);
 #endif
 #else
-		//throw std::bad_exception(_stream.str().c_str());
+		throw std::bad_exception(_stream.str().c_str());
 #endif
 
    }

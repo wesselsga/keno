@@ -67,7 +67,7 @@ int32_t Channel::run(const std::string& id)
 
       auto window = screen::Window::create(title.str(), channel);
 
-      ctx = gfx::Context::create(window->display(), window->handle());
+      ctx = gfx::Context::create(0, window->handle());
       		     
 		window->show();
 		window->update();

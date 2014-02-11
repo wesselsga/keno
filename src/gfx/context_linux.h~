@@ -21,7 +21,7 @@ public:
 private:
 	GlxContext();
 
-   GLXContext _ctx;
+   ::GLXContext _ctx;
 
    Display* _display;
    GLXDrawable _window;

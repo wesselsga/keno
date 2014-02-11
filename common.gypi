@@ -101,7 +101,12 @@
 								'AdditionalLibraryDirectories': '..\\deps\\lib\\win32\\<(arch)\\Debug'
 							}, # VCLinkerTool
 						} # msvs_settings
-					}]
+					}],
+
+               
+			      ['OS=="linux"', {
+				      'cflags': ['-g']
+               }]
 										
 				] # conditions
 					

@@ -122,30 +122,17 @@ int32_t X11Window::pump()
    if (!_display){
       return 0;
    }
-   
+
    XEvent evnt;
    
-   while (XPending(_display))
-   {
-      XNextEvent(_display, &evnt);
-      
-      switch (evnt.type)
-      {
-         case KeyPress:
-            break;
-         default : break;         
-      }
-   }
-   
-   
-   /*if (XCheckWindowEvent(_display, _frame, KeyPressMask, &evnt))
+   if (XCheckWindowEvent(_display, _frame, KeyPressMask, &evnt))
    {
       char* key = XKeysymToString(
                   XkbKeycodeToKeysym(_display, evnt.xkey.keycode, 0, 0));
       
       LOG(VERBOSE) << "x11: key press " << key;                  
       
-   }*/
+   }
 
    return 0;
 }
