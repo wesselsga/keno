@@ -4,11 +4,11 @@ in_dir="."
 out_dir="$in_dir/build"
 gyp_home="$in_dir/tools/gyp"
 
-platform=$(cat /etc/*-release | grep '^ID=' | sed 's/ID=//')
+distrib=$(cat /etc/*-release | grep '^ID=' | sed 's/ID=//')
 
-echo $platform
+echo $distrib
 
-if [[ "$platform" == 'raspbian' ]]; then
+if [[ "$distrib" == 'raspbian' ]]; then
 
    "$gyp_home/gyp" reno.gyp \
       --debug=all \

@@ -1,6 +1,6 @@
 {
 	'variables': {
-		'device%': 'any',      # 'raspi' for Raspberry PI
+		'distrib%': 'any',      # 'raspi' for Raspberry PI
 	},
 
 	'target_defaults': {
@@ -41,12 +41,12 @@
          }],
 
          # for Raspberry PI
-         ['device=="raspi"', {
+         ['distrib=="raspi"', {
             'defines': ['_RASPI'],
          }],
 
          # anything other than Raspberry PI
-         ['device!="raspi"', {
+         ['distrib!="raspi"', {
             'sources/': [['exclude', '_raspi\\.cc$|_raspi\\.h$|_egl\\.cc$|_egl\\.cc$']],
          }],
 			

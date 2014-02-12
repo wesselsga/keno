@@ -85,9 +85,9 @@
                ]
             }],	
 
-            ['device=="raspi"', {
+            ['distrib=="raspi"', {
                 'include_dirs+': [
-                   '/opt/vc/include',
+                  '/opt/vc/include',
                   '/opt/vc/include/interface/vcos/pthreads',
                ],
                
@@ -204,7 +204,7 @@
             }],
 
             # for Raspberry PI
-            ['device=="raspi"', {
+            ['distrib=="raspi"', {
                'include_dirs+': [
                   '/opt/vc/include',
                   '/opt/vc/include/interface/vcos/pthreads',
@@ -217,7 +217,7 @@
                'libraries': [ '-lbcm_host -lEGL -lGLESv2' ]              
             }],
 
-            ['OS=="linux" and device!="raspi"', {      
+            ['OS=="linux" and distrib!="raspi"', {      
                'libraries': [ '-lX11 -lGL -lGLEW' ]
             }],              
             
