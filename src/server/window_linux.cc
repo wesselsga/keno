@@ -73,14 +73,16 @@ std::shared_ptr<X11Window> X11Window::create(
       return nullptr;
    }
    
-   GLXFBConfig* cfg = reinterpret_cast<GLXFBConfig*>(malloc(sizeof(GLXFBConfig)));
-   memcpy(cfg, fbc, sizeof(GLXFBConfig));
+   GLXFBConfig cfg = fbc[0];
    XFree(fbc);
    
+   //GLXFBConfig* cfg = reinterpret_cast<GLXFBConfig*>(malloc(sizeof(GLXFBConfig)));
+   //memcpy(cfg, fbc, sizeof(GLXFBConfig));
+      
    auto viProc = (XVisualInfo*(*)(Display*, GLXFBConfig))
          glXGetProcAddressARB((const GLubyte*)"glXGetVisualFromFBConfig");
    
-   XVisualInfo* vi = viProc(win->_display, *cfg);
+   XVisualInfo* vi = viProc(win->_display, cfg);
       
    XSetWindowAttributes win_attribs;
    win_attribs.background_pixmap = None;
