@@ -11,7 +11,7 @@ void gfx::startup()
 
 void gfx::shutdown()
 {
-	FreeImage_Initialise();
+	FreeImage_DeInitialise();
 	
 	LOG(DEBUG) << "gfx: shutdown.";	
 }
