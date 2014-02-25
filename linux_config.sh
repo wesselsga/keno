@@ -16,7 +16,7 @@ if [[ "$distrib" == 'raspbian' ]]; then
       -f make \
       --generator-output="$out_dir" \
       -Darch=arm \
-      -Ddevice=raspi
+      -Ddistrib=raspi
 else
 
    "$gyp_home/gyp" reno.gyp \
