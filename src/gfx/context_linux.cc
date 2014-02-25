@@ -55,10 +55,10 @@ std::shared_ptr<Context> GlxContext::create(
          
    int32_t gl_attribs[] =
    {
-      GLX_CONTEXT_MAJOR_VERSION_ARB, 3,
+      GLX_CONTEXT_MAJOR_VERSION_ARB, 2,
       GLX_CONTEXT_MINOR_VERSION_ARB, 0,
       GLX_CONTEXT_FLAGS_ARB, 0,
-      //GLX_CONTEXT_PROFILE_MASK_ARB, GLX_CONTEXT_ES2_PROFILE_BIT_EXT,
+      GLX_CONTEXT_PROFILE_MASK_ARB, 0x00000004/*GLX_CONTEXT_ES2_PROFILE_BIT_EXT*/,
       0
    };  
       
@@ -87,6 +87,8 @@ std::shared_ptr<Context> GlxContext::create(
       LOG(ERR) << "glx: error initializing GLEW";
       return nullptr;      
    }
+   
+   LOG(VERBOSE) << "glx: " << glGetString(GL_VERSION);
    
    glClearColor(0.0f, 0.0f, 1.0f, 0.0f);
    
