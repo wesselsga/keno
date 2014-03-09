@@ -39,8 +39,8 @@ uniform sampler2D s_tex;
 
 void main()
 {
-   gl_FragColor = vec4(1.0,1.0,1.0,1.0);
-	//gl_FragColor = texture2D(s_tex, v_tex) * v_color;
+   //gl_FragColor = vec4(1.0,1.0,1.0,1.0);
+	gl_FragColor = texture2D(s_tex, v_tex) * v_color;
 }
 
 )GLSL";
@@ -163,7 +163,7 @@ void Mixer::process()
 {
    glDisable(GL_DEPTH_TEST);
 
-   glViewport(0, 0, 640, 360);
+   //glViewport(0, 0, 640, 360);
 
    // get current viewport
 	GLint vp[4];
@@ -256,7 +256,7 @@ void Mixer::process()
       err = glGetError();
       LOG_IF(WARN, err!=GL_NO_ERROR) << "draw arrays";
 
-      LOG(VERBOSE) << "drawing array";
+      //LOG(VERBOSE) << "drawing array";
 
 	   glBindBuffer(GL_ARRAY_BUFFER, 0);
       err = glGetError();
