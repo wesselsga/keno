@@ -144,6 +144,10 @@ std::shared_ptr<Program> Program::build(
 
    glAttachShader(program, vertex->id());
    glAttachShader(program, frag->id());
+
+   glBindAttribLocation(program, 0, "a_tex");
+	glBindAttribLocation(program, 1, "a_color");
+   glBindAttribLocation(program, 2, "a_pos");
 	
 	// Link the program
    glLinkProgram(program);
