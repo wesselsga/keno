@@ -142,9 +142,9 @@ Mixer::Mixer()
 	
 	_program = Program::build(_vertBasic, _fragBasic);
 
-	glBindAttribLocation(_program->id(), 0, "a_tex");
-	glBindAttribLocation(_program->id(), 1, "a_color");
-   glBindAttribLocation(_program->id(), 2, "a_pos");
+	//glBindAttribLocation(_program->id(), 0, "a_tex");
+	//glBindAttribLocation(_program->id(), 1, "a_color");
+   //glBindAttribLocation(_program->id(), 2, "a_pos");
 
 	// activate our shaders
 	glUseProgram(_program->id());
