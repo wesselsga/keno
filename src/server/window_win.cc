@@ -37,8 +37,7 @@ std::shared_ptr<Win32Window> Win32Window::create(
 		wcls.cbSize = sizeof(WNDCLASSEX);
 		wcls.cbClsExtra = 0;
 		wcls.cbWndExtra = 0;
-		//wcls.hbrBackground = 0;
-		wcls.hbrBackground = (HBRUSH)(COLOR_WINDOW+1);
+		wcls.hbrBackground = 0;
 		wcls.hCursor = ::LoadCursor(0, IDC_ARROW);
 		wcls.hIcon = 0;
 		wcls.hIconSm = 0;
@@ -51,7 +50,10 @@ std::shared_ptr<Win32Window> Win32Window::create(
 	}
 
 	uint32_t w = 640;
-	uint32_t h = 480;
+	uint32_t h = 360;
+
+   //w = 320;
+	//h = 180;
 
 	DWORD style = WS_OVERLAPPEDWINDOW;
 	DWORD exstyle = WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;
@@ -163,6 +165,11 @@ bool Win32Window::winProc(uint32_t msg, WPARAM wp, LPARAM, LRESULT& result)
 			break;
 
 		case WM_SIZE:
+         {
+            //height = HIWORD(lParam);
+            //width  = LOWORD(lParam);
+            //glViewport(0, 0, width, height);
+         }
 			break;
 
 		case WM_PAINT:

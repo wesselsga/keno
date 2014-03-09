@@ -1,5 +1,4 @@
-#ifndef __FILE_H__
-#define __FILE_H__
+#pragma once
 
 class Path
 {
@@ -26,6 +25,3 @@ private:
 
 	std::string _str;
 };
-
-
-#endif //  __FILE_H__

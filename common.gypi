@@ -25,11 +25,6 @@
 					'CharacterSet': '1',
 				},
 				
-				'msvs_settings': {
-					'VCCLCompilerTool': {
-						'ProgramDataBaseFileName':'$(OutDir)\\$(ProjectName).pdb',
-					} # VCCLCompilerTool
-				} # msvs_settings
 			}],
 
 			['arch=="x64"', {
@@ -58,23 +53,34 @@
 				'conditions': [
 					['OS=="win"', {
 						'defines': ['_WIN32'],
-						
-						'msvs_settings': {
-							'VCCLCompilerTool': {
-								'Optimization': '2',
-								'InlineFunctionExpansion': '2',
-								'EnableIntrinsicFunctions': 'true',
-								'FavorSizeOrSpeed': '0',
+													
+						'msbuild_settings': {
+							'ClCompile': {
+                        'Optimization': 'MaxSpeed',
+								'InlineFunctionExpansion': 'AnySuitable',
+								'IntrinsicFunctions': 'true',
+								'FavorSizeOrSpeed': 'Neither',
 								'StringPooling': 'true',
-								'RuntimeLibrary': '0'  # /MT
-							}, # VCCLCompilerTool
-							'VCLinkerTool': {					
-								'LinkIncremental': '1',
-								'OptimizeReferences': '2',
-								'EnableCOMDATFolding': '2',
-								'AdditionalLibraryDirectories': '..\\deps\\lib\\win32\\<(arch)\\Release'
-							}, # VCLinkerTool
-						} # msvs_settings
+								'RuntimeLibrary': 'MultiThreaded',  # /MT
+                        'ProgramDataBaseFileName':'$(OutDir)\\$(ProjectName).pdb',                        
+                     },
+                     
+                     'Link': {
+                        'LinkTimeCodeGeneration': 'UseLinkTimeCodeGeneration',
+                        'OptimizeReferences': 'true',
+								'EnableCOMDATFolding': 'true',
+								'AdditionalLibraryDirectories': '..\\deps\\lib\\win32\\<(arch)\\Release'								
+							},
+
+                     'ResourceCompile': {
+                        'Culture': '0x03eb',
+                        'ShowProgress': 'true',
+                        'SuppressStartupBanner': 'true',
+                        
+                     },			
+							
+						}	# msbuild_settings
+
 					}]
 					
 				] # conditions								
@@ -89,22 +95,28 @@
 				'conditions': [
 					['OS=="win"', {
 						'defines': ['_WIN32'],
-						
-						'msvs_settings': {
-							'VCCLCompilerTool': {
-								'Optimization': '0',
-								'RuntimeLibrary': '1',  # /MTd
-							}, # VCCLCompilerTool
-							'VCLinkerTool': {					
+												
+						'msbuild_settings': {
+							'ClCompile': {
+                        'Optimization': 'Disabled',
+								'RuntimeLibrary': 'MultiThreadedDebug',
+                        'ProgramDataBaseFileName':'$(OutDir)\\$(ProjectName).pdb',
+                     },
+                     
+                     'Link': {
 								'GenerateDebugInformation': 'true',
-								'LinkIncremental': '2',
-								'AdditionalLibraryDirectories': '..\\deps\\lib\\win32\\<(arch)\\Debug'
-							}, # VCLinkerTool
-						} # msvs_settings
-					}],
+								'AdditionalLibraryDirectories': '..\\deps\\lib\\win32\\<(arch)\\Debug',
+								'ImageHasSafeExceptionHandlers': 'false'
+							},
 
+                     #'': {
+							#	'LinkIncremental': 'false'
+							#}					
+							
+						}	# msbuild_settings					
+					}],
                
-			      ['OS=="linux"', {
+					['OS=="linux"', {
 				      'cflags': ['-g']
                }]
 										

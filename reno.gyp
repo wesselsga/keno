@@ -64,8 +64,14 @@
             './src/gfx/image.h',
             './src/gfx/image.cc',
             './src/gfx/matrix.h',
+            './src/gfx/layer.h',
+            './src/gfx/layer.cc',
+            './src/gfx/mixer.h',
+            './src/gfx/mixer.cc',
             './src/gfx/shader.h',
-            './src/gfx/shader.cc',				
+            './src/gfx/shader.cc',
+            './src/gfx/stream.h',
+            './src/gfx/stream.cc',				
          ],
 
          'conditions': [
@@ -162,6 +168,7 @@
             
          'sources': [
             './src/version.h',
+            './src/version_win.rc',
             './src/server/channel.h',
             './src/server/channel.cc',
             './src/server/channel_host.h',
@@ -184,7 +191,7 @@
                               
                'link_settings':  {
                   'libraries': [ '-lkernel32.lib;psapi.lib;user32.lib;gdi32.lib;'
-                  'advapi32.lib;iphlpapi.lib;opengl32.lib;ws2_32.lib;winmm.lib;FreeImage.lib;libuv.lib' ]
+                  'advapi32.lib;iphlpapi.lib;opengl32.lib;ws2_32.lib;winmm.lib;libuv.lib;freeimage3154.lib' ]
                },
                
             }],

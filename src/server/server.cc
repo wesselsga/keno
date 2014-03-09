@@ -1,6 +1,5 @@
 #include "server.h"
 #include "channel_host.h"
-#include "../version.h"
 
 
 Server::Server(const _priv&)

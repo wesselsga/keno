@@ -5,6 +5,8 @@
 #include "stopwatch.h"
 #include "window.h"
 
+#include "image.h"
+
 #ifndef _WIN32
 #include <unistd.h>
 #endif
@@ -12,10 +14,10 @@
 void prompt()
 {
 #ifdef _WIN32
-	::MessageBox(0, 
-			L"Attach debugger?", 
-			L"Debugger", 
-			MB_YESNO|MB_ICONQUESTION);
+	//::MessageBox(0, 
+	//		L"Attach debugger?", 
+	//		L"Debugger", 
+	//		MB_YESNO|MB_ICONQUESTION);
 #endif
 }
 
@@ -64,11 +66,21 @@ int32_t Channel::run(const std::string& id)
 
       std::stringstream title;
       title << PRODUCT << " | " << "channel: " << channel->id();
-
+      
       auto window = screen::Window::create(title.str(), channel);
 
       ctx = gfx::Context::create(window->display(), window->handle());
-      		     
+      
+      // create the video mixer
+      gfx::Mixer mixer;
+
+      auto stream = gfx::Image::create("026.png");
+      if (stream)
+      {
+         mixer.addLayer(stream);
+      }
+
+      // show the window on screen
 		window->show();
 		window->update();
 
@@ -81,7 +93,6 @@ int32_t Channel::run(const std::string& id)
 
 		for (;;)
 		{
-
          if (window->pump() < 0)
 			{
 				channel->close();
@@ -89,6 +100,8 @@ int32_t Channel::run(const std::string& id)
 			}
 
          ctx->clear();
+         
+         mixer.process();
 
 			ctx->swapBuffers();	
 			++frame;
@@ -108,6 +121,9 @@ int32_t Channel::run(const std::string& id)
 				mark = hires_time();
 			}
 
+         //std::chrono::milliseconds timeout(1);
+         //std::this_thread::sleep_for(timeout);
+         
 		}
 	}
 

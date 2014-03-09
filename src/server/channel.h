@@ -25,7 +25,6 @@ private:
 	Channel(const Channel&)=delete;
 	const Channel& operator=(const Channel&) = delete;
 
-	friend class win::Window;
 	void close();
 
 	static void iothread(void*);
@@ -36,6 +35,5 @@ private:
 
 	const std::weak_ptr<Server> _server;
 	const std::string _id;
-	//std::shared_ptr<win::Window> _window;
 
 };

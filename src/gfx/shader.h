@@ -9,8 +9,8 @@ public:
 	explicit Shader(const _priv&, const uint32_t);
 	virtual ~Shader();
 
-	std::shared_ptr<Shader> loadVertex(const std::string&);
-	std::shared_ptr<Shader> loadFragment(const std::string&);
+	static std::shared_ptr<Shader> loadVertex(const std::string&);
+	static std::shared_ptr<Shader> loadFragment(const std::string&);
 
 	uint32_t id() const { return _id; }
 
@@ -31,8 +31,14 @@ class Program
 public:
 	explicit Program(const _priv&, const uint32_t);
 	virtual ~Program();
+   
+   static std::shared_ptr<Program> build(std::istream&);
 
-	std::shared_ptr<Program> build(
+   static std::shared_ptr<Program> build(
+					const std::string&,
+					const std::string&);
+
+	static std::shared_ptr<Program> build(
 					const std::shared_ptr<Shader>&,
 					const std::shared_ptr<Shader>&);
 

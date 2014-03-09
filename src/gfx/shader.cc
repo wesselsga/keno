@@ -64,7 +64,7 @@ GLuint Shader::load(const char* code, GLenum type)
       {
 			char* msg = (char*)malloc(sizeof(char) * msglen);
          glGetShaderInfoLog(shader, msglen, NULL, msg);
-			LOG(ERR) << "gfx: error compiling shader: " << msg;
+			LOG(ERR) << "gfx: error compiling shader: " << std::endl << msg;
          free(msg);
       }
 
@@ -83,6 +83,49 @@ Program::Program(const _priv&, const GLuint id) : _id(id)
 Program::~Program()
 {
 	glDeleteProgram(_id);
+}
+
+std::shared_ptr<Program> Program::build(std::istream& in)
+{   
+   std::string line;
+   std::string sep("========");
+
+   std::string vs;
+   while (std::getline(in, line))
+   {
+      if (!line.compare(0, sep.size(), sep)){
+         break;
+      }
+
+      vs.append(line);
+      vs.append("\n");
+   }
+
+   std::string fs;
+   while (std::getline(in, line))
+   {
+      fs.append(line);
+      fs.append("\n");        
+   }
+
+   return build(vs, fs);
+}
+
+std::shared_ptr<Program> Program::build(
+               const std::string& vs,
+					const std::string& fs)
+{
+   auto vshader = Shader::loadVertex(vs);
+   if (!vshader){
+      return nullptr;
+   }
+
+   auto fshader = Shader::loadFragment(fs);
+   if (!fshader){
+      return nullptr;
+   }
+
+   return build(vshader, fshader);
 }
 
 std::shared_ptr<Program> Program::build(
@@ -117,7 +160,7 @@ std::shared_ptr<Program> Program::build(
       {
 			char* msg = (char*)malloc(sizeof(char) * msglen);
          glGetProgramInfoLog(program, msglen, NULL, msg);
-			LOG(ERR) << "gfx: error linking program: " << msg;
+			LOG(ERR) << "gfx: error linking program: " << std::endl << msg;
          free(msg);
       }
       
