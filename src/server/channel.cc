@@ -77,6 +77,7 @@ int32_t Channel::run(const std::string& id)
       auto stream = gfx::Image::create("026.png");
       if (stream)
       {
+         LOG(VERBOSE) << "adding image layer...";
          mixer.addLayer(stream);
       }
 
