@@ -39,7 +39,8 @@ uniform sampler2D s_tex;
 
 void main()
 {
-	gl_FragColor = texture2D(s_tex, v_tex) * v_color;
+   gl_FragColor = vec4(1.0,1.0,1.0,1.0);
+	//gl_FragColor = texture2D(s_tex, v_tex) * v_color;
 }
 
 )GLSL";
@@ -139,7 +140,7 @@ Mixer::Mixer()
 	//std::ifstream fs("c:\\temp\\bilinear.shdr");
 	//std::ifstream fs("c:\\temp\\bicubic.shdr");
 	
-	_program = Program::build(_vertBasic, _fragBicubic);
+	_program = Program::build(_vertBasic, _fragBasic);
 
 	glBindAttribLocation(_program->id(), 0, "a_tex");
 	glBindAttribLocation(_program->id(), 1, "a_color");
@@ -182,12 +183,6 @@ void Mixer::process()
 	uloc = glGetUniformLocation(_program->id(), "s_tex");
    glUniform1i(uloc, 0);
    
-
-   uloc = glGetUniformLocation(_program->id(), "s_hg_x");
-   glUniform1i(uloc, 1);
-   uloc = glGetUniformLocation(_program->id(), "s_hg_y");
-   glUniform1i(uloc, 2);   
-
 	float tex_size[2] = { 1920.0f, 1080.0f };
    float e_x[2] = { 1.0f / 1920.0f, 0.0f };
    float e_y[2] = { 0.0f, 1.0f / 1080.0f };
