@@ -193,14 +193,19 @@ void Mixer::process()
    uloc = glGetUniformLocation(_program->id(), "e_x");
    glUniform2fv(uloc, 1, e_x);
    err = glGetError();
+   LOG_IF(WARN, err!=GL_NO_ERROR) << "e_x";
+
 
    uloc = glGetUniformLocation(_program->id(), "e_y");
    glUniform2fv(uloc, 1, e_y);
    err = glGetError();
+   LOG_IF(WARN, err!=GL_NO_ERROR) << "e_y";
 
    uloc = glGetUniformLocation(_program->id(), "size_source");
    glUniform2fv(uloc, 1, tex_size);
    err = glGetError();
+   LOG_IF(WARN, err!=GL_NO_ERROR) << "size_source";
+
 
    uloc = glGetUniformLocation(_program->id(), "u_mvp");
    
@@ -212,9 +217,13 @@ void Mixer::process()
       glActiveTexture(GL_TEXTURE0);
 	   glBindTexture(GL_TEXTURE_2D, layer->texture());
 	   err = glGetError();
+      LOG_IF(WARN, err!=GL_NO_ERROR) << "bind texture";
+
 
       glBindBuffer(GL_ARRAY_BUFFER, layer->model());
       err = glGetError();
+      LOG_IF(WARN, err!=GL_NO_ERROR) << "bind model";
+
       
       mvp *= mat4<GLfloat>::scale(1.0f, 1.0f, 0.0f);
 		mvp *= proj * model;
@@ -232,19 +241,24 @@ void Mixer::process()
 	   // bind the tex coordinates to the shader (unused here)
 	   glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(struct vertex), (const GLvoid*)(offset));
       err = glGetError();
+      LOG_IF(WARN, err!=GL_NO_ERROR) << "shader 0";
 
 	   // bind the colors to the shader
 	   offset += 2 * sizeof(GLfloat);
 	   glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(struct vertex), (const GLvoid*)(offset));
       err = glGetError();
+      LOG_IF(WARN, err!=GL_NO_ERROR) << "shader 1";
 
 	   // bind the position to the shader
 	   offset += 4 * sizeof(GLfloat);
 	   glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(struct vertex), (const GLvoid*)(offset));
       err = glGetError();
+      LOG_IF(WARN, err!=GL_NO_ERROR) << "shader 2";
 
 	   glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
       err = glGetError();
+      LOG_IF(WARN, err!=GL_NO_ERROR) << "draw arrays";
+
 
 	   glBindBuffer(GL_ARRAY_BUFFER, 0);
       err = glGetError();

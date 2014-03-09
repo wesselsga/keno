@@ -105,6 +105,7 @@ std::shared_ptr<Image> Image::create(const std::string& filename)
 			pixmap);		
 
 	err = glGetError();
+   LOG_IF(WARN, (err!=GL_NO_ERROR)) << "error initializing texture";
 
    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
@@ -114,7 +115,7 @@ std::shared_ptr<Image> Image::create(const std::string& filename)
    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
    
    err = glGetError();
-
+   LOG_IF(WARN, err!=GL_NO_ERROR) << "error in texture";
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 
