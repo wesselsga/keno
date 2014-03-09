@@ -256,6 +256,7 @@ void Mixer::process()
       err = glGetError();
       LOG_IF(WARN, err!=GL_NO_ERROR) << "draw arrays";
 
+      LOG(VERBOSE) << "drawing array";
 
 	   glBindBuffer(GL_ARRAY_BUFFER, 0);
       err = glGetError();
