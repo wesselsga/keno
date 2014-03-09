@@ -162,6 +162,8 @@ void Mixer::process()
 {
    glDisable(GL_DEPTH_TEST);
 
+   glViewport(0, 0, 640, 360);
+
    // get current viewport
 	GLint vp[4];
    glGetIntegerv(GL_VIEWPORT, vp);

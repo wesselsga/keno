@@ -51,13 +51,13 @@ std::shared_ptr<Context> EglContext::create(void* handle)
 
 	EGLint attribs[] =
    {
-       EGL_RED_SIZE,       5,
-       EGL_GREEN_SIZE,     6,
-       EGL_BLUE_SIZE,      5,
-       EGL_ALPHA_SIZE,     EGL_DONT_CARE,
-       EGL_DEPTH_SIZE,     EGL_DONT_CARE,
-       EGL_STENCIL_SIZE,   EGL_DONT_CARE,
-       EGL_SAMPLE_BUFFERS, 0,
+       EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
+       EGL_SURFACE_TYPE,    EGL_WINDOW_BIT,
+       EGL_BUFFER_SIZE,     32,
+       EGL_RED_SIZE,        8,
+       EGL_GREEN_SIZE,      8,
+       EGL_BLUE_SIZE,       8,
+       EGL_ALPHA_SIZE,      8,
        EGL_NONE
    };
 
