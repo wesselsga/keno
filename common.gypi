@@ -69,7 +69,7 @@
                         'LinkTimeCodeGeneration': 'UseLinkTimeCodeGeneration',
                         'OptimizeReferences': 'true',
 								'EnableCOMDATFolding': 'true',
-								'AdditionalLibraryDirectories': '..\\deps\\lib\\win32\\<(arch)\\Release'								
+								'AdditionalLibraryDirectories': '.\\lib\\<(arch)\\release'								
 							},
 
                      'ResourceCompile': {
@@ -105,7 +105,7 @@
                      
                      'Link': {
 								'GenerateDebugInformation': 'true',
-								'AdditionalLibraryDirectories': '..\\deps\\lib\\win32\\<(arch)\\Debug',
+								'AdditionalLibraryDirectories': '.\\lib\\<(arch)\\debug',
 								'ImageHasSafeExceptionHandlers': 'false'
 							},
 

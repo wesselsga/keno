@@ -15,7 +15,7 @@
 #include <iomanip>
 #include <sstream>
 
-#include "../../deps/include/uv/uv.h"
+#include <uv/uv.h>
 
 #include "../version.h"
 #ifdef _WIN32
