@@ -28,7 +28,7 @@ log "DISTRIB=$DISTRIB"
 
 # set the processor target
 PLATFORM="x86"
-if [[ "$DISTRIB" == 'raspbian' ]]; then
+if [[ "$DISTRIB" == 'raspi' ]]; then
 PLATFORM="arm"
 fi
 
@@ -94,7 +94,7 @@ fi
 
 # on raspi; we need to force arm6
 if [ "$DISTRIB" == 'raspi' ] && [ -n V8_TARGET ]; then
-   V8_TARGET = "$V8_TARGET arm7=false vfp3=off hardfp=on" 
+   V8_TARGET="$V8_TARGET arm7=false vfp3=off hardfp=on" 
 fi
 
 # actually build v8 if we have a target options
