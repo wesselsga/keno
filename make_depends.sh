@@ -1,27 +1,30 @@
 #!/bin/bash
 
+# function to print to console with color
+function log {
+   echo "$(tput setaf 6)`date +%T` - $1$(tput sgr0)"
+}
+
 IN_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 BUILD_DIR="$IN_DIR/build"
 GYP_HOME="$BUILD_DIR/gyp"
 
 mkdir -p "$BUILD_DIR"
-echo "$(tput setaf 6)IN_DIR=$IN_DIR$(tput sgr0)"
-echo "BUILD_DIR=$BUILD_DIR"
+log "$(tput setaf 6)IN_DIR=$IN_DIR$(tput sgr0)"
+log "BUILD_DIR=$BUILD_DIR"
 
 # download gyp
 if [ ! -d "$GYP_HOME" ]; then
-echo "Downloading gyp ..."
+log "Downloading gyp ..."
 git clone "https://git.chromium.org/external/gyp.git" "$GYP_HOME"
 fi
-
-exit
 
 # what flavor of linux is this?
 DISTRIB=$(cat /etc/*-release | grep '^ID=' | sed 's/ID=//')
 if [ "$DISTRIB" == 'raspbian' ]; then
    DISTRIB = 'raspi';
 fi
-echo "DISTRIB=$DISTRIB"
+log "DISTRIB=$DISTRIB"
 
 # set the processor target
 PLATFORM="x86"
@@ -36,7 +39,7 @@ mkdir -p "$BUILD_DIR/lib/$PLATFORM/debug"
 
 # download and build libuv
 if [ ! -d "$BUILD_DIR/third_party/libuv" ]; then
-echo "Downloading libuv ..."
+log "Downloading libuv ..."
 git clone https://github.com/joyent/libuv.git "$BUILD_DIR/third_party/libuv"
 git clone https://git.chromium.org/external/gyp.git "$BUILD_DIR/third_party/libuv/build/gyp"
 cd "$BUILD_DIR/third_party/libuv"
@@ -49,7 +52,7 @@ fi
 
 # build freeimage
 if [ ! -d "$BUILD_DIR/third_party/freeimage" ]; then
-echo "Building freeimage ..."
+log "Building freeimage ..."
 unzip -q "$IN_DIR/third_party/freeimage.zip" -d "$BUILD_DIR/third_party/"
 cd "$BUILD_DIR/third_party/freeimage"
 make
@@ -60,7 +63,7 @@ fi
 
 # build freetype
 if [ ! -d "$BUILD_DIR/third_party/freetype-2.4.11" ]; then
-echo "Building freetype ..."
+log "Building freetype ..."
 unzip -q "$IN_DIR/third_party/freetype-2.4.11.zip" -d "$BUILD_DIR/third_party/"
 cd "$BUILD_DIR/third_party/freetype-2.4.11"
 make setup ansi
@@ -81,7 +84,7 @@ fi
 
 # download v8 and its dependencies if we need to
 if [ ! -d "$BUILD_DIR/third_party/v8" ]; then
-   echo "Download v8  ..."
+   log "Downloading v8  ..."
    git clone https://github.com/v8/v8.git "$BUILD_DIR/third_party/v8"
    unzip -q "$IN_DIR/third_party/icu.zip" -d "$BUILD_DIR/third_party/v8/third_party/"
    git clone https://git.chromium.org/external/gyp.git "$BUILD_DIR/third_party/v8/build/gyp"
@@ -96,7 +99,7 @@ fi
 
 # actually build v8 if we have a target options
 if [ -n $V8_TARGET ]; then 
-   echo "Building v8 $V8_TARGET ..."
+   log "Building v8 $V8_TARGET ..."
    cd "$BUILD_DIR/third_party/v8"
    make "$V8_TARGET"
    cp out/$V8_TARGET/obj.target/tools/gyp/*.a "$BUILD_DIR/lib/$PLATFORM/release/"
