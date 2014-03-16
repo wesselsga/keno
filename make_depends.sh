@@ -22,7 +22,7 @@ fi
 # what flavor of linux is this?
 DISTRIB=$(cat /etc/*-release | grep '^ID=' | sed 's/ID=//')
 if [ "$DISTRIB" == 'raspbian' ]; then
-   DISTRIB = 'raspi';
+   DISTRIB='raspi';
 fi
 log "DISTRIB=$DISTRIB"
 
