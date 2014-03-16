@@ -1,29 +1,36 @@
 #!/bin/bash
 
-in_dir="."
-out_dir="$in_dir/build"
-gyp_home="$in_dir/tools/gyp"
+IN_DIR="."
+BUILD_DIR="$IN_DIR/build"
+GYP_HOME="$BUILD_DIR/gyp"
 
-distrib=$(cat /etc/*-release | grep '^ID=' | sed 's/ID=//')
+# download gyp
+if [ ! -d "%GYP_HOME" ]; then
+echo "Downloading gyp..."
+git clone "https://git.chromium.org/external/gyp.git" "$GYP_HOME"
+fi
 
-echo $distrib
+# what flavor of linux is this?
+DISTRIB=$(cat /etc/*-release | grep '^ID=' | sed 's/ID=//')
 
-if [[ "$distrib" == 'raspbian' ]]; then
+echo $DISTRIB
 
-   "$gyp_home/gyp" reno.gyp \
+if [[ "$DISTRIB" == 'raspbian' ]]; then
+
+   "$GYP_HOME/gyp" reno.gyp \
       --debug=all \
       --depth=. \
       -f make \
-      --generator-output="$out_dir" \
+      --generator-output="$BUILD_DIR" \
       -Darch=arm \
       -Ddistrib=raspi
 else
 
-   "$gyp_home/gyp" reno.gyp \
+   "$GYP_HOME/gyp" reno.gyp \
       --debug=all \
       --depth=. \
       -f make \
-      --generator-output="$out_dir" \
+      --generator-output="$BUILD_DIR" \
       -Darch=x86
 
 fi
