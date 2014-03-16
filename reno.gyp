@@ -195,7 +195,7 @@
                               
                'link_settings':  {
                   'libraries': [ '-lkernel32.lib;psapi.lib;user32.lib;gdi32.lib;'
-                  'advapi32.lib;iphlpapi.lib;opengl32.lib;ws2_32.lib;winmm.lib;libuv.lib;freeimage3154.lib' ]
+                  'advapi32.lib;iphlpapi.lib;opengl32.lib;ws2_32.lib;winmm.lib;libuv.lib;freeimage.lib;freetype.lib;v8_base.ia32.lib;v8_snapshot.lib;icui18n.lib;icuuc.lib' ]
                },
                
             }],

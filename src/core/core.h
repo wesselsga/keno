@@ -16,6 +16,7 @@
 #include <sstream>
 
 #include <uv/uv.h>
+#include <v8/v8.h>
 
 #include "../version.h"
 #ifdef _WIN32
