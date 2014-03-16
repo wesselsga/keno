@@ -45,7 +45,7 @@ fi
 # build free image
 if [ ! -d "$BUILD_DIR/third_party/freeimage" ]; then
 echo "Building freeimage ..."
-unzip "$IN_DIR/third_party/freeimage.zip" -d "$BUILD_DIR/third_party/"
+unzip -q "$IN_DIR/third_party/freeimage.zip" -d "$BUILD_DIR/third_party/"
 cd "$BUILD_DIR/third_party/freeimage"
 make
 cp Dist/FreeImage.h "$BUILD_DIR/include/freeimage.h"
@@ -56,7 +56,7 @@ fi
 # build free type
 if [ ! -d "$BUILD_DIR/third_party/freetype-2.4.11" ]; then
 echo "Building freetype ..."
-unzip "$IN_DIR/third_party/freetype-2.4.11.zip" -d "$BUILD_DIR/third_party/"
+unzip -q "$IN_DIR/third_party/freetype-2.4.11.zip" -d "$BUILD_DIR/third_party/"
 cd "$BUILD_DIR/third_party/freetype-2.4.11"
 make setup ansi
 make
@@ -75,13 +75,14 @@ fi
 if [ ! -d "$BUILD_DIR/third_party/v8" ]; then
 echo "Building v8 $V8_TARGET ..."
 git clone https://github.com/v8/v8.git "$BUILD_DIR/third_party/v8"
-unzip "$IN_DIR/third_party/icu.zip" -d "$BUILD_DIR/third_party/v8/third_party/"
+unzip -q "$IN_DIR/third_party/icu.zip" -d "$BUILD_DIR/third_party/v8/third_party/"
 git clone https://git.chromium.org/external/gyp.git "$BUILD_DIR/third_party/v8/build/gyp"
 cd "$BUILD_DIR/third_party/v8"
 make "$V8_TARGET"
-mv "$BUILD_DIR/third_party/v8/out/$V8_TARGET/obj.target/tools/gyp/*.a" "$BUILD_DIR/lib/$PLATFORM/release/"
-mv "$BUILD_DIR/third_party/v8/out/$V8_TARGET/obj.target/third_party/icu/*.a" "$BUILD_DIR/lib/$PLATFORM/release/"
-cp "$BUILD_DIR/third_party/v8/include/*.h" "$BUILD_DIR/include/v8/"
+cp out/$V8_TARGET/obj.target/tools/gyp/*.a "$BUILD_DIR/lib/$PLATFORM/release/"
+cp out/$V8_TARGET/obj.target/third_party/icu/*.a "$BUILD_DIR/lib/$PLATFORM/release/"
+mkdir "$BUILD_DIR/include/v8"
+cp include/*.h "$BUILD_DIR/include/v8/"
 fi
 
 cd $IN_DIR
