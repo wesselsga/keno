@@ -88,8 +88,8 @@ msbuild "%out_dir%\third_party\FreeImage\FreeImage.2008.sln" ^
 		/p:Platform="Win32" /clp:NoSummary;NoItemAndPropertyList;Verbosity=minimal /nologo
 		
 copy "%out_dir%\third_party\FreeImage\Dist\FreeImage.h" "%out_dir%\include\freeimage.h" /y
-move "%out_dir%\third_party\FreeImage\Dist\FreeImage.lib" "%out_dir%\lib\x86\release\FreeImage.lib"
-move "%out_dir%\third_party\FreeImage\Dist\FreeImaged.lib" "%out_dir%\lib\x86\debug\FreeImage.lib"
+move "%out_dir%\third_party\FreeImage\Dist\FreeImage.lib" "%out_dir%\lib\x86\release\freeimage.lib"
+move "%out_dir%\third_party\FreeImage\Dist\FreeImaged.lib" "%out_dir%\lib\x86\debug\freeimage.lib"
 :freeimage_good
 
 :freetype

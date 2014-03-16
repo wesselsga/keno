@@ -1,6 +1,6 @@
 #include "gfx.h"
 
-#include <FreeImage.h>
+#include <freeimage.h>
 
 #ifdef _RASPI
 #include <GLES2/gl2.h>
