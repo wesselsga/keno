@@ -210,7 +210,7 @@
                
                'link_settings': {
                    'ldflags': ['-L./lib/<(arch)/release'],						
-                   'libraries': [ '-lfreeimage -luv' ]
+                   'libraries': [ '-lfreeimage -luv -lv8_base -licui18n -licuuc -licudata -lv8_snapshot' ]
                }
             }],
 

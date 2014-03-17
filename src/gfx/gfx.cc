@@ -1,6 +1,6 @@
 #include "gfx.h"
 
-#include <FreeImage.h>
+#include <freeimage.h>
 
 void gfx::startup()
 {
