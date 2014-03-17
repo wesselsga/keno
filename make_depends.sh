@@ -93,15 +93,15 @@ else
 fi
 
 # on raspi; we need to force arm6
-if [ "$DISTRIB" == 'raspi' ] && [ -n V8_TARGET ]; then
+if [ "$DISTRIB" == 'raspi' ] && [ -n "$V8_TARGET" ]; then
    V8_TARGET="$V8_TARGET arm7=false vfp3=off hardfp=on" 
 fi
 
 # actually build v8 if we have a target options
-if [ -n $V8_TARGET ]; then 
+if [[ -n "$V8_TARGET" ]]; then 
    log "Building v8 $V8_TARGET ..."
    cd "$BUILD_DIR/third_party/v8"
-   make "$V8_TARGET"
+   make $V8_TARGET
    cp out/$V8_TARGET/obj.target/tools/gyp/*.a "$BUILD_DIR/lib/$PLATFORM/release/"
    cp out/$V8_TARGET/obj.target/third_party/icu/*.a "$BUILD_DIR/lib/$PLATFORM/release/"
    mkdir "$BUILD_DIR/include/v8"
