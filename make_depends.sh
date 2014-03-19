@@ -9,6 +9,13 @@ IN_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 BUILD_DIR="$IN_DIR/build"
 GYP_HOME="$BUILD_DIR/gyp"
 
+# what flavor of linux is this?
+DISTRIB=$(cat /etc/*-release | grep '^ID=' | sed 's/ID=//')
+if [ "$DISTRIB" == 'raspbian' ]; then
+   DISTRIB='raspi';
+fi
+log "DISTRIB=$DISTRIB"
+
 mkdir -p "$BUILD_DIR"
 log "IN_DIR=$IN_DIR"
 log "BUILD_DIR=$BUILD_DIR"
@@ -18,13 +25,6 @@ if [ ! -d "$GYP_HOME" ]; then
    log "Downloading gyp ..."
    git clone "https://git.chromium.org/external/gyp.git" "$GYP_HOME"
 fi
-
-# what flavor of linux is this?
-DISTRIB=$(cat /etc/*-release | grep '^ID=' | sed 's/ID=//')
-if [ "$DISTRIB" == 'raspbian' ]; then
-   DISTRIB='raspi';
-fi
-log "DISTRIB=$DISTRIB"
 
 # set the processor (architecture)
 ARCH="x86"
@@ -43,8 +43,11 @@ if [ ! -d "$BUILD_DIR/third_party/libuv" ]; then
    git clone https://github.com/joyent/libuv.git "$BUILD_DIR/third_party/libuv"
    git clone https://git.chromium.org/external/gyp.git "$BUILD_DIR/third_party/libuv/build/gyp"
    cd "$BUILD_DIR/third_party/libuv"
+   log "Building libuv ..."
    ./gyp_uv.py -f make
    make -C out BUILDTYPE=Release
+   
+   log "Copying libuv lib/*.h ..." 
    cp out/Release/libuv.a "$BUILD_DIR/lib/$ARCH/release"
    mkdir -p "$BUILD_DIR/include/uv"
    cp include/*.h "$BUILD_DIR/include/uv"
@@ -56,6 +59,7 @@ if [ ! -d "$BUILD_DIR/third_party/freeimage" ]; then
    unzip -q "$IN_DIR/third_party/freeimage.zip" -d "$BUILD_DIR/third_party/"
    cd "$BUILD_DIR/third_party/freeimage"
    make
+   log "Copying freeimage lib/*.h ..."
    cp Dist/FreeImage.h "$BUILD_DIR/include/freeimage.h"
    mv Dist/libfreeimage.a "$BUILD_DIR/lib/$ARCH/release"
 fi
@@ -67,6 +71,7 @@ if [ ! -d "$BUILD_DIR/third_party/freetype-2.4.11" ]; then
    cd "$BUILD_DIR/third_party/freetype-2.4.11"
    make setup ansi
    make
+   log "Copying freetype lib/*.h ..."
    cp objs/libfreetype.a "$BUILD_DIR/lib/$ARCH/release"
    cp -R include/* "$BUILD_DIR/include/"
 fi
@@ -93,11 +98,11 @@ else
 fi
 
 # on raspi; we need to force arm6
-V8_TARGET="$V8_ARCH.release"
+V8_TARGET="$V8_ARCH.release snapshot=off"
 if [ "$DISTRIB" == 'raspi' ] && [ -n "$V8_TARGET" ]; then
    #V8_TARGET="$V8_TARGET arm7=false vfp3=off hardfp=on" 
-   #V8_TARGET="$V8_TARGET arm7=false snapshot=off i18nsupport=off"
-   V8_TARGET="$V8_TARGET arm7=false snapshot=off"
+   #V8_TARGET="$V8_TARGET arm7=false i18nsupport=off"
+   V8_TARGET="$V8_TARGET arm7=false"
 fi
 
 # actually build v8 if we have a target
@@ -107,6 +112,7 @@ if [[ -n $V8_ARCH ]]; then
    
    make $V8_TARGET
    
+   log "Copying v8 libs/*.h ..."
    mv out/$V8_ARCH.release/obj.target/tools/gyp/libv8_base.$V8_ARCH.a \
       "$BUILD_DIR/lib/$ARCH/release/libv8_base.a"
    mv out/$V8_ARCH.release/obj.target/tools/gyp/libv8_nosnapshot.$V8_ARCH.a \
@@ -121,6 +127,8 @@ fi
 
 cd $IN_DIR
 
+log "Generating make projects ..."
+
 # finally; generate our projects
 "$GYP_HOME/gyp" reno.gyp \
    --debug=all \
@@ -129,4 +137,7 @@ cd $IN_DIR
    --generator-output="$BUILD_DIR" \
    -Darch=$ARCH \
    -Ddistrib=$DISTRIB
+
+log "Complete."
+
 

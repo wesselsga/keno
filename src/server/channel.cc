@@ -21,7 +21,7 @@ void prompt()
 #endif
 }
 
-void wait_for_a_while(uv_idle_t* handle, int status) 
+void wait_for_a_while(uv_idle_t* handle) 
 {
    std::chrono::milliseconds timeout(10);
    std::this_thread::sleep_for(timeout);
