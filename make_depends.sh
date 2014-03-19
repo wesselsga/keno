@@ -95,7 +95,9 @@ fi
 # on raspi; we need to force arm6
 V8_TARGET="$V8_ARCH.release"
 if [ "$DISTRIB" == 'raspi' ] && [ -n "$V8_TARGET" ]; then
-   V8_TARGET="$V8_TARGET arm7=false vfp3=off hardfp=on" 
+   #V8_TARGET="$V8_TARGET arm7=false vfp3=off hardfp=on" 
+   #V8_TARGET="$V8_TARGET arm7=false snapshot=off i18nsupport=off"
+   V8_TARGET="$V8_TARGET arm7=false snapshot=off"
 fi
 
 # actually build v8 if we have a target
@@ -105,13 +107,13 @@ if [[ -n $V8_ARCH ]]; then
    
    make $V8_TARGET
    
-   mv out/$V8_ARCH/obj.target/tools/gyp/libv8_base.$V8_ARCH.a \
+   mv out/$V8_ARCH.release/obj.target/tools/gyp/libv8_base.$V8_ARCH.a \
       "$BUILD_DIR/lib/$ARCH/release/libv8_base.a"
-   mv out/$V8_ARCH/obj.target/tools/gyp/libv8_nosnapshot.$V8_ARCH.a \
+   mv out/$V8_ARCH.release/obj.target/tools/gyp/libv8_nosnapshot.$V8_ARCH.a \
       "$BUILD_DIR/lib/$ARCH/release/libv8_nosnapshot.a"
-   mv out/$V8_ARCH/obj.target/tools/gyp/libv8_snapshot.a \
-      "$BUILD_DIR/lib/$ARCH/release/libv8_snapshot.a"
-   mv out/$V8_ARCH/obj.target/third_party/icu/*.a "$BUILD_DIR/lib/$ARCH/release/"
+   #mv out/$V8_ARCH.release/obj.target/tools/gyp/libv8_snapshot.a \
+   #   "$BUILD_DIR/lib/$ARCH/release/libv8_snapshot.a"
+   mv out/$V8_ARCH.release/obj.target/third_party/icu/*.a "$BUILD_DIR/lib/$ARCH/release/"
    
    mkdir "$BUILD_DIR/include/v8"
    cp include/*.h "$BUILD_DIR/include/v8/"
