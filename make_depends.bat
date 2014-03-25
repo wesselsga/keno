@@ -14,14 +14,6 @@ mkdir %out_dir%\lib\x86 >nul 2>&1
 mkdir %out_dir%\lib\x86\debug >nul 2>&1
 mkdir %out_dir%\lib\x86\release >nul 2>&1
 
-set opt_filters=0
-:arg
-if "%1"=="" goto continue	
-   if "%1"=="--msvc-filters" set opt_filters=1
-shift
-goto arg
-:continue
-
 echo in_dir=%in_dir%
 echo out_dir=%out_dir%
 
@@ -168,13 +160,10 @@ if ERRORLEVEL 0 goto success
 goto failed
 	
 :success
-   if "%opt_filters%"=="0" (
-      echo Removing msvc project *.filters
-	  del "%out_dir%\*.filters"
-    )
-	
-   echo Generation successful. 	
-   exit /b
+echo Removing msvc project *.filters
+del "%out_dir%\*.filters"
+echo Generation successful. 	
+exit /b
 
 :failed
-   echo Generation failed. (err=%ERRORLEVEL%)
+echo Generation failed. (err=%ERRORLEVEL%)
