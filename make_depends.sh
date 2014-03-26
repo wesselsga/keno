@@ -90,19 +90,21 @@ fi
 # download v8 and its dependencies if we need to
 if [ ! -d "$BUILD_DIR/third_party/v8" ]; then
    log "Downloading v8 ..."
-   git clone https://github.com/v8/v8.git "$BUILD_DIR/third_party/v8"
-   unzip -q "$IN_DIR/third_party/icu.zip" -d "$BUILD_DIR/third_party/v8/third_party/"
+   git clone -b 3.24 https://github.com/v8/v8.git "$BUILD_DIR/third_party/v8"
+   #unzip -q "$IN_DIR/third_party/icu.zip" -d "$BUILD_DIR/third_party/v8/third_party/"
    git clone https://git.chromium.org/external/gyp.git "$BUILD_DIR/third_party/v8/build/gyp"
+   log "Patching cpu.cc in v8/src ..."
+   cp "$IN_DIR/third_party/cpu.cc" "$BUILD_DIR/third_party/v8/src/"
 else
    V8_ARCH=""
 fi
 
 # on raspi; we need to force arm6
-V8_TARGET="$V8_ARCH.release snapshot=off"
+V8_TARGET="$V8_ARCH.release snapshot=off i18nsupport=off"
 if [ "$DISTRIB" == 'raspi' ] && [ -n "$V8_TARGET" ]; then
    #V8_TARGET="$V8_TARGET arm7=false vfp3=off hardfp=on" 
-   #V8_TARGET="$V8_TARGET arm7=false i18nsupport=off"
-   V8_TARGET="$V8_TARGET arm7=false"
+   #V8_TARGET="$V8_TARGET arm7=false hardfp=on vpfp3=off"
+   V8_TARGET="$V8_TARGET arm_version=6 vfp3=off armfloatabi=hard"
 fi
 
 # actually build v8 if we have a target
