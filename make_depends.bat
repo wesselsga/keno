@@ -107,7 +107,7 @@ xcopy /q /y /S "%out_dir%\third_party\freetype-2.4.11\include\*" "%out_dir%\incl
 :v8
 if exist %out_dir%\third_party\v8 goto v8_good
 echo git clone https://github.com/v8/v8.git build/third_party/v8
-git clone https://github.com/v8/v8.git build/third_party/v8
+git clone -b 3.24 https://github.com/v8/v8.git build/third_party/v8
 if errorlevel 1 goto v8_fail
 goto v8_build
 
@@ -121,26 +121,28 @@ cscript "%in_dir%tools\zip.vbs" ^
 		"%in_dir%third_party\cygwin.zip" ^
 		"%out_dir%\third_party\v8\third_party\"
 		
-cscript "%in_dir%tools\zip.vbs" ^
-		"%in_dir%third_party\icu.zip" ^
-		"%out_dir%\third_party\v8\third_party\"
+REM cscript "%in_dir%tools\zip.vbs" ^
+REM 		"%in_dir%third_party\icu.zip" ^
+REM 		"%out_dir%\third_party\v8\third_party\"
 		
 xcopy /q /y /S "%out_dir%\gyp" "%out_dir%\third_party\v8\build\gyp\"
 xcopy /q /y /S "%out_dir%\third_party\v8\include\*.h" "%out_dir%\include\v8\"
 
 cd "%out_dir%\third_party\v8"
-python "build\gyp_v8"
+python build\gyp_v8 -Dv8_use_snapshot=false -Dv8_enable_i18n_support=0
 
 msbuild "%out_dir%\third_party\v8\build\all.sln" ^
-		/m /t:Build /p:Configuration="Release" ^
+ 		/m /t:Build /p:Configuration="Release" ^
 		/p:Platform="Win32" /clp:NoSummary;NoItemAndPropertyList;Verbosity=minimal /nologo
 
 msbuild "%out_dir%\third_party\v8\build\all.sln" ^
-		/m /t:Build /p:Configuration="Debug" ^
+ 		/m /t:Build /p:Configuration="Debug" ^
 		/p:Platform="Win32" /clp:NoSummary;NoItemAndPropertyList;Verbosity=minimal /nologo
-
-xcopy /q /y /S "%out_dir%\third_party\v8\build\Release\lib\*.lib" "%out_dir%\lib\x86\release\"
-xcopy /q /y /S "%out_dir%\third_party\v8\build\Debug\lib\*.lib" "%out_dir%\lib\x86\debug\"
+		
+copy "%out_dir%\third_party\v8\build\Release\lib\v8_base.ia32.lib" "%out_dir%\lib\x86\release\v8_base.lib" /y 
+copy "%out_dir%\third_party\v8\build\Release\lib\v8_nosnapshot.ia32.lib" "%out_dir%\lib\x86\release\v8_nosnapshot.lib" /y 
+copy "%out_dir%\third_party\v8\build\Debug\lib\v8_base.ia32.lib" "%out_dir%\lib\x86\debug\v8_base.lib" /y 
+copy "%out_dir%\third_party\v8\build\Debug\lib\v8_nosnapshot.ia32.lib" "%out_dir%\lib\x86\debug\v8_nosnapshot.lib" /y 
 :v8_good
 
 
