@@ -15,6 +15,8 @@
 #include <iomanip>
 #include <sstream>
 
+#include <mutex>
+
 #include <uv/uv.h>
 #include <v8/v8.h>
 

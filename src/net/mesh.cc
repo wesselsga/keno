@@ -114,24 +114,24 @@ bool Node::send(Frame*)
    data[1] = 0x90;
    memcpy(data + 2, &len, 2);
 
+   uint32_t d0 = htonl(_id.data0());
    uint32_t d1 = htonl(_id.data1());
    uint32_t d2 = htonl(_id.data2());
    uint32_t d3 = htonl(_id.data3());
-   uint32_t d4 = htonl(_id.data4());
 
    if (htonl(47) != 47) 
    {
-      uint32_t tmp = d1;
-      d1 = d4;
-      d4 = tmp;
-      tmp = d2;
-      d2 = d3;
+      uint32_t tmp = d0;
+      d0 = d3;
       d3 = tmp;
+      tmp = d1;
+      d1 = d2;
+      d2 = tmp;
    }
-   memcpy(data + 4, &d1, 4);
-   memcpy(data + 8, &d2, 4);
-   memcpy(data + 12, &d3, 4);
-   memcpy(data + 16, &d4, 4);
+   memcpy(data + 4, &d0, 4);
+   memcpy(data + 8, &d1, 4);
+   memcpy(data + 12, &d2, 4);
+   memcpy(data + 16, &d3, 4);
 
    uint32_t msgid = 0x00AA00FF;
    msgid = htonl(msgid);

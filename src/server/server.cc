@@ -31,13 +31,12 @@ int32_t Server::run()
 		server->_hosts.push_back(host);	
 	}
 
-   uint32_t d1 = 0x00112233;
-   uint32_t d2 = 0x44556677;
-   uint32_t d3 = 0x8899AABB;
-   uint32_t d4 = 0xCCDDEEFF;
+   //uint32_t d1 = 0x00112233;
+   //uint32_t d2 = 0x44556677;
+   //uint32_t d3 = 0x8899AABB;
+   //uint32_t d4 = 0xCCDDEEFF;
 
-
-   Uuid nid(d1,d2,d3,d4);
+   Uuid nid = Uuid::make();
    mesh::Node node(nid);	
 
    node.open(loop);   
