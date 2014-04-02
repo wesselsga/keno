@@ -177,6 +177,8 @@
             './src/server/channel.cc',
             './src/server/channel_host.h',
             './src/server/channel_host.cc',				
+            './src/server/executor.h',
+            './src/server/executor.cc',       
             './src/server/server.h',				
             './src/server/server.cc',				
             './src/server/main.cc',

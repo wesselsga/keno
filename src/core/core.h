@@ -14,6 +14,7 @@
 #include <fstream>
 #include <iomanip>
 #include <sstream>
+#include <exception>
 
 #include <mutex>
 

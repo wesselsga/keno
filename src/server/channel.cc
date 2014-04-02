@@ -65,7 +65,7 @@ int32_t Channel::run(const std::string& id)
 		std::shared_ptr<gfx::Context> ctx;
 
       std::stringstream title;
-      title << PRODUCT << " | " << "channel: " << channel->id();
+      title << PRODUCT << " (v" << VERSION_STR << ") | " << "channel:" << channel->id();
       
       auto window = screen::Window::create(title.str(), channel);
 

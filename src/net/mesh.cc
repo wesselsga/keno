@@ -90,7 +90,7 @@ bool Node::open(uv_loop_t* loop)
    }
 
 	LOG(INFO) << "mesh: " << 
-         id() << " open @ udp://" << _mcastAddr << ":" << _port << " ...";
+         id() << std::endl << "  open @ udp://" << _mcastAddr << ":" << _port;
       
    send(nullptr);
 

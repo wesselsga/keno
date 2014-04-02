@@ -139,7 +139,7 @@ void __call::init(const char* file, int32_t line)
 				<< std::setw(2) << hours
 				<< ":" << std::setw(2) << mins
 				<< ":" << std::setw(2) << secs
-				<< ":" << std::setw(3) << ms;
+				<< "." << std::setw(3) << ms;
 	}
 
 	_stream << "|~" 
