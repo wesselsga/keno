@@ -132,7 +132,7 @@ struct vertex
 	GLfloat pos[4];
 };
 
-Mixer::Mixer()
+Compositor::Compositor()
 {
    // load our screen shader
 	//std::cout << "mixer: loading shaders...";
@@ -155,11 +155,11 @@ Mixer::Mixer()
 
 }
 
-Mixer::~Mixer()
+Compositor::~Compositor()
 {
 }
 
-void Mixer::process()
+void Compositor::process()
 {
    glDisable(GL_DEPTH_TEST);
 
@@ -266,7 +266,7 @@ void Mixer::process()
 
 }
 
-void Mixer::addLayer(const std::shared_ptr<Stream>& stream)
+void Compositor::addLayer(const std::shared_ptr<Stream>& stream)
 {
    if (!stream){
       return;

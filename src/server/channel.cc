@@ -47,8 +47,7 @@ int32_t Channel::run(const std::string& id)
 {
 	prompt();
 
-	std::shared_ptr<Channel> channel(
-			std::make_shared<Channel>(_priv{}, id));
+	auto channel = std::make_shared<Channel>(_priv{}, id);
 	
 	uv_thread_create(
 			&channel->_iothread, 
@@ -72,13 +71,13 @@ int32_t Channel::run(const std::string& id)
       ctx = gfx::Context::create(window->display(), window->handle());
       
       // create the video mixer
-      gfx::Mixer mixer;
+      gfx::Compositor compositor;
 
       auto stream = gfx::Image::create("026.png");
       if (stream)
       {
          LOG(VERBOSE) << "adding image layer...";
-         mixer.addLayer(stream);
+         compositor.addLayer(stream);
       }
 
       // show the window on screen
@@ -102,7 +101,7 @@ int32_t Channel::run(const std::string& id)
 
          ctx->clear();
          
-         mixer.process();
+         compositor.process();
 
 			ctx->swapBuffers();	
 			++frame;

@@ -14,7 +14,7 @@ int32_t Server::run()
 {
    LOG(INFO) << "server: " << PRODUCT << " (v" << VERSION_STR << ") ...";
 
-  	std::shared_ptr<Server> server = std::make_shared<Server>(_priv{});
+  	auto server = std::make_shared<Server>(_priv{});
 
 	server->_self = server;
 

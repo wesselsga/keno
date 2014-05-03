@@ -27,18 +27,18 @@ std::shared_ptr<BcmWindow> BcmWindow::create(
 
 	bcm_host_init();
 		
-	uint32_t width;
-   uint32_t height;
+	uint32_t screenWidth;
+   uint32_t screenHeight;
 
    // create an EGL window surface, passing context width/height
-   int32_t success = graphics_get_display_size(0 /* LCD */, &width, &height);
+   int32_t success = graphics_get_display_size(0 /* LCD */, &screenWidth, &screenHeight);
    if ( success < 0 )
    {
 		LOG(ERR) << "raspi: failed to query display size.";
       return nullptr;
    }
 
-	LOG(VERBOSE) << "raspi: display size " << width << "x" << height;
+	LOG(VERBOSE) << "raspi: display size " << screenWidth << "x" << screenHeight;
 
 	DISPMANX_ELEMENT_HANDLE_T dispman_element;
    DISPMANX_DISPLAY_HANDLE_T dispman_display;
@@ -48,15 +48,15 @@ std::shared_ptr<BcmWindow> BcmWindow::create(
 
 	std::shared_ptr<BcmWindow>win(new BcmWindow(_ctx{}, channel));
    
-   dst_rect.x = width - 640;
-   dst_rect.y = height - 360;
-   dst_rect.width = 640;
-   dst_rect.height = 360;
+   dst_rect.width = 1023;
+   dst_rect.height = 512;
+   dst_rect.x = screenWidth - dst_rect.width;
+   dst_rect.y = screenHeight - dst_rect.height;   
       
    src_rect.x = 0;
    src_rect.y = 0;
-   src_rect.width = width << 16;
-   src_rect.height = height << 16;   
+   src_rect.width = screenWidth << 16;
+   src_rect.height = screenHeight << 16;   
 
    dispman_display = vc_dispmanx_display_open( 0 /* LCD */);
    dispman_update = vc_dispmanx_update_start( 0 );
@@ -80,8 +80,8 @@ std::shared_ptr<BcmWindow> BcmWindow::create(
 
 	EGL_DISPMANX_WINDOW_T* eglw = new EGL_DISPMANX_WINDOW_T;
 	eglw->element = dispman_element;
-	eglw->width = width;
-   eglw->height = height;
+	eglw->width = screenWidth;
+   eglw->height = screenHeight;
    
 	win->_eglw = (void*)eglw;
 	
