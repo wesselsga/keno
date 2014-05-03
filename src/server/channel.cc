@@ -73,7 +73,12 @@ int32_t Channel::run(const std::string& id)
       // create the video mixer
       gfx::Compositor compositor;
 
-      auto stream = gfx::Image::create("026.png");
+      auto home = Path::home();
+      home = home.append("reno");
+      home.mkdir();
+      auto imgfile = home.append("default.png");
+
+      auto stream = gfx::Image::create(imgfile.c_str());
       if (stream)
       {
          LOG(VERBOSE) << "adding image layer...";

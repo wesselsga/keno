@@ -8,7 +8,9 @@ public:
 	Path(const Path& rhs){ assign(rhs); }
 	~Path();
 
-	Path& operator=(const Path& rhs)
+   static Path home();
+
+   Path& operator=(const Path& rhs)
 	{
 		if (this != &rhs){
 			assign(rhs);
@@ -16,12 +18,15 @@ public:
 		return *this;
 	}
 
+   Path append(const std::string&) const;
+   bool mkdir() const;
+
 	const std::string& str() const { return _str; }
 	const char* c_str() const { return _str.c_str(); }
-
+   
 private:
-
+   char separator() const;
 	void assign(const Path&);
 
-	std::string _str;
+   std::string _str;
 };

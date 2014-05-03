@@ -196,7 +196,7 @@
             ['OS=="win"', {
                               
                'link_settings':  {
-                  'libraries': [ '-lkernel32.lib;psapi.lib;user32.lib;gdi32.lib;'
+                  'libraries': [ '-lshell32.lib;kernel32.lib;psapi.lib;user32.lib;gdi32.lib;'
                   'advapi32.lib;iphlpapi.lib;opengl32.lib;ws2_32.lib;winmm.lib;libuv.lib;freeimage.lib;freetype.lib;v8_base.lib;v8_nosnapshot.lib' ]
                },
                
