@@ -48,7 +48,7 @@ std::shared_ptr<BcmWindow> BcmWindow::create(
 
 	std::shared_ptr<BcmWindow>win(new BcmWindow(_ctx{}, channel));
    
-   dst_rect.width = 1023;
+   dst_rect.width = 1024;
    dst_rect.height = 512;
    dst_rect.x = screenWidth - dst_rect.width;
    dst_rect.y = screenHeight - dst_rect.height;   

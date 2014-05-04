@@ -15,7 +15,7 @@ enum class FolderId
    UserHome
 };
 
-Path locate(enum class FolderId);
+Path locate(FolderId);
 
 
 Path::Path()
@@ -73,7 +73,7 @@ bool Path::mkdir() const
 
 #else
 
-   if (!mkdir(c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH)) {
+   if (!::mkdir(c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH)) {
       return true;
    }
 
@@ -117,7 +117,7 @@ Path locate(FolderId id)
       }
    }
 
-   throw std::bad_exception("?");
+   throw std::bad_exception();
 }   
 
 #endif
