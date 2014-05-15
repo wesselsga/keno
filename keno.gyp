@@ -154,7 +154,7 @@
       },
    
       {
-         'target_name': 'reno',
+         'target_name': 'keno',
          'type': 'executable',
          
          'dependencies': [
