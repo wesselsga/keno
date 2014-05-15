@@ -49,11 +49,8 @@ std::shared_ptr<Win32Window> Win32Window::create(
 		::RegisterClassEx(&wcls);
 	}
 
-	uint32_t w = 640;
-	uint32_t h = 360;
-
-   //w = 320;
-	//h = 180;
+	uint32_t w = 1024;
+	uint32_t h = 512;
 
 	DWORD style = WS_OVERLAPPEDWINDOW;
 	DWORD exstyle = WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;

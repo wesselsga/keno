@@ -97,7 +97,7 @@ Path locate(FolderId id)
       }      
    }
 
-   throw std::bad_exception("?");   
+   throw std::runtime_error("unknown location");   
 }
 
 #else
@@ -117,7 +117,7 @@ Path locate(FolderId id)
       }
    }
 
-   throw std::bad_exception();
+   throw std::runtime_error("unknown location");
 }   
 
 #endif
