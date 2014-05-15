@@ -3,7 +3,7 @@
 #define STRINGIFY2(s) #s
 #define STRINGIFY(s) STRINGIFY2(s)
 
-#define PRODUCT      "reno"
+#define PRODUCT      "keno"
 #define COPYRIGHT    ""
 
 #define VERSION_MAJOR    0

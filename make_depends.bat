@@ -178,7 +178,7 @@ move "%BUILD_DIR%\third_party\v8\build\Debug\lib\v8_nosnapshot.%V8_ARCH%.lib" "%
 :vs_generate
 echo Generating Visual Studio projects...
 cd %IN_DIR%
-call "%gyp_home%\gyp.bat" reno.gyp ^
+call "%gyp_home%\gyp.bat" keno.gyp ^
 	--debug=all ^
 	--depth=. ^
 	-f msvs -G msvs_version=%GYP_MSVS_VERSION% ^
