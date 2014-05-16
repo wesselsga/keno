@@ -7,7 +7,7 @@ namespace screen {
 class Window
 {
 public:
-	virtual ~Window();
+   virtual ~Window(){}
 
 	static std::shared_ptr<Window> create(
             const std::string&,
@@ -23,7 +23,10 @@ public:
 
 protected:
 
-   Window(const std::weak_ptr<Channel>&);
+   Window(const std::weak_ptr<Channel>& channel)
+      : _channel(channel)
+   {
+   }
 
    const std::weak_ptr<Channel> _channel;
 	

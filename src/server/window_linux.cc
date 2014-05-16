@@ -1,11 +1,62 @@
 #include "server.h"
 #include "channel.h"
-#include "window_linux.h"
+
+#include "window.h"
+
+#include <X11/Xlib.h>
 
 #include <GL/glew.h>
 #include <GL/glxew.h>
 
 #include <X11/XKBlib.h>
+
+
+namespace screen {
+
+class X11Window : public Window
+{
+	struct _ctx { };
+public:
+	explicit X11Window(const _ctx&, const std::weak_ptr<Channel>&);
+	virtual ~X11Window();
+
+	static std::shared_ptr<X11Window> create(
+            const std::string&,
+            const std::weak_ptr<Channel>&);
+   
+   void*   handle() const { return reinterpret_cast<void*>(_frame); }
+   void*   display() const { return _display; }
+	void    show() const;
+	void    update() const;
+	void    close();
+
+   int32_t pump();
+
+private:
+
+	X11Window()=delete;
+	X11Window(const X11Window&)=delete;
+	const X11Window& operator=(const X11Window&) = delete;
+
+   Display* _display;
+   Visual*  _visual;
+   ::Window  _frame;
+
+};
+
+};
+
+
+
+std::shared_ptr<screen::Window> screen::Window::create(
+         const std::string& title,
+			const std::weak_ptr<Channel>& channel)
+{
+   return win = X11Window::create(title, channel);
+}
+
+
+
 
 using namespace screen;
 

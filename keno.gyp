@@ -184,11 +184,8 @@
             './src/server/main.cc',
             './src/server/window.h',
             './src/server/window.cc',
-            './src/server/window_win.h',
             './src/server/window_win.cc',
-            './src/server/window_linux.h',
             './src/server/window_linux.cc',
-            './src/server/window_raspi.h',
             './src/server/window_raspi.cc'
          ],
          
