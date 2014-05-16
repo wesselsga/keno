@@ -183,7 +183,6 @@
             './src/server/server.cc',				
             './src/server/main.cc',
             './src/server/window.h',
-            './src/server/window.cc',
             './src/server/window_win.cc',
             './src/server/window_linux.cc',
             './src/server/window_raspi.cc'

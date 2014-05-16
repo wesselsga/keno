@@ -74,7 +74,7 @@ int32_t Channel::run(const std::string& id)
       gfx::Compositor compositor;
 
       auto home = Path::home();
-      home = home.append("reno");
+      home = home.append(PRODUCT);
       home.mkdir();
       auto imgfile = home.append("default.png");
 
