@@ -1,9 +1,45 @@
 #include "gfx.h"
+#include "context.h"
 
 #include <GLES2/gl2.h>
 #include <EGL/egl.h>
 
-#include "context_egl.h"
+namespace gfx {
+	
+class EglContext : public Context
+{
+public:
+	~EglContext();
+
+	static std::shared_ptr<Context> create(void*);
+	
+	void bind();
+	void unbind();
+	void clear();
+	void swapBuffers();
+	void finish();
+
+private:
+	EglContext();
+
+	void* _ctx;
+	void* _display;
+	void* _surface;
+
+};
+
+
+std::shared_ptr<Context> Context::create(
+         void* native_display, void* native_window)
+{
+	return EglContext::create(native_window);
+}
+
+
+}; // gfx
+
+
+
 
 using namespace gfx;
 

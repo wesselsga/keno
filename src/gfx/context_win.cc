@@ -1,9 +1,42 @@
 #include "gfx.h"
 
-#include "context_win.h"
+#include "context.h"
 
 #include <GL/glew.h>
 #include <GL/wglew.h>
+
+
+namespace gfx {
+
+class WglContext : public Context
+{
+public:
+	~WglContext();
+
+	static std::shared_ptr<Context> create(void*);
+	
+	void bind();
+	void unbind();
+	void clear();
+	void swapBuffers();
+	void finish();
+
+private:
+	WglContext();
+
+	HGLRC _hrc;
+	HDC   _hdc;
+};
+
+
+std::shared_ptr<Context> Context::create(
+         void* native_display, void* native_window)
+{
+	return WglContext::create(native_window);
+}
+
+}; // gfx
+
 
 using namespace gfx;
 

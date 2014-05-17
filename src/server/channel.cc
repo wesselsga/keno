@@ -118,7 +118,7 @@ int32_t Channel::run(const std::string& id)
 						static_cast<double>((now - mark) / (freq*1.0));
 
 				double fps = frame / elapsed;
-				LOG(VERBOSE) << "channel: fps:" 
+				LOG(VERBOSE) << "channel[" << channel->id() << "]: fps=" 
 						<< std::fixed << std::setprecision(3)
 						<< fps;
 

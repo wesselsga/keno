@@ -1,8 +1,46 @@
 #include "gfx.h"
 
-#include "context_linux.h"
+#include "context.h"
 
 #include <unistd.h>
+
+
+namespace gfx {
+
+class GlxContext : public Context
+{
+public:
+	~GlxContext();
+
+	static std::shared_ptr<Context> create(void*,void*);
+	
+	void bind();
+	void unbind();
+	void clear();
+	void swapBuffers();
+	void finish();
+
+private:
+	GlxContext();
+
+   GLXContext _ctx;
+
+   Display* _display;
+   GLXDrawable _window;
+
+
+};
+
+std::shared_ptr<Context> Context::create(
+         void* native_display, void* native_window)
+{
+	return GlxContext::create(native_display, native_window);
+}
+
+
+}; // gfx
+
+
 
 
 using namespace gfx;
