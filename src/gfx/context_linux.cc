@@ -2,6 +2,10 @@
 
 #include "context.h"
 
+
+#include <GL/glew.h>
+#include <GL/glxew.h>
+
 #include <unistd.h>
 
 
