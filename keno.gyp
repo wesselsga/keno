@@ -208,7 +208,7 @@
                
                'link_settings': {
                    'ldflags': ['-L./lib/<(arch)/release'],						
-                   'libraries': [ '-lfreeimage -luv -lv8_base -lv8_nosnapshot' ]
+                   'libraries': [ '-lfreeimage -luv -lpthread -lv8_base -lv8_nosnapshot' ]
                }
             }],
 

@@ -52,7 +52,7 @@ std::shared_ptr<screen::Window> screen::Window::create(
          const std::string& title,
 			const std::weak_ptr<Channel>& channel)
 {
-   return win = X11Window::create(title, channel);
+   return X11Window::create(title, channel);
 }
 
 

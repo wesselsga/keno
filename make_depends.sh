@@ -27,9 +27,14 @@ if [ ! -d "$GYP_HOME" ]; then
 fi
 
 # set the processor (architecture)
-ARCH="x86"
 if [[ "$DISTRIB" == 'raspi' ]]; then
    ARCH="arm"
+else
+   ARCH=$(uname -m)
+fi
+
+if [[ "$ARCH" == 'x86_64' ]]; then
+   ARCH='x64'
 fi
 
 # create dir structure for third party libs
@@ -132,7 +137,7 @@ cd $IN_DIR
 log "Generating make projects ..."
 
 # finally; generate our projects
-"$GYP_HOME/gyp" reno.gyp \
+"$GYP_HOME/gyp" keno.gyp \
    --debug=all \
    --depth=. \
    -f make \
