@@ -87,15 +87,28 @@
                'include_dirs+': [
                   './src/gfx/glew/'						
                ]
-            }],	
+            }],
+
+			['OS=="linux" and distrib!="raspi"', {      
+               'sources': [
+                  './src/gfx/glew/glew.c',					
+                  './src/gfx/glew/GL/glew.h',
+                  './src/gfx/glew/GL/glxew.h'
+               ],
+               
+               'defines': ['GLEW_STATIC','GLEW_NO_GLU'],
+			   'include_dirs+': [
+                  './src/gfx/glew/'						
+               ]
+            }],
 
             ['distrib=="raspi"', {
                 'include_dirs+': [
                   '/opt/vc/include',
                   '/opt/vc/include/interface/vcos/pthreads',
-               ],
+				],
                
-               'sources/': [['exclude', 'context_linux.cc|context_linux.h']],
+				'sources/': [['exclude', 'context_linux.cc|context_linux.h']],
 
             }],					
             
