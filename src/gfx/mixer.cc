@@ -233,22 +233,19 @@ void Compositor::process()
 	   glEnableVertexAttribArray(2);
       err = glGetError();
 	   
-      GLuint offset = 0;
 
 	   // bind the tex coordinates to the shader (unused here)
-	   glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(struct vertex), (const GLvoid*)(offset));
+	   glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(struct vertex), (const GLvoid*)(0));
       err = glGetError();
       LOG_IF(WARN, err!=GL_NO_ERROR) << "shader 0";
 
 	   // bind the colors to the shader
-	   offset += 2 * sizeof(GLfloat);
-	   glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(struct vertex), (const GLvoid*)(offset));
+	   glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(struct vertex), (const GLvoid*)(2 * sizeof(GLfloat)));
       err = glGetError();
       LOG_IF(WARN, err!=GL_NO_ERROR) << "shader 1";
 
 	   // bind the position to the shader
-	   offset += 4 * sizeof(GLfloat);
-	   glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(struct vertex), (const GLvoid*)(offset));
+	   glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(struct vertex), (const GLvoid*)(6 * sizeof(GLfloat)));
       err = glGetError();
       LOG_IF(WARN, err!=GL_NO_ERROR) << "shader 2";
 

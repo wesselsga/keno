@@ -22,7 +22,7 @@
          ],
 
          'include_dirs+': [
-			'./build/include'
+            './build/include'
          ],
       },
       
@@ -32,7 +32,7 @@
 
          'include_dirs+': [
             './src/core',
-			'./build/include'
+            './build/include'
          ],
             
          'sources': [
@@ -48,7 +48,8 @@
          
          'include_dirs+': [
             './src/core',
-			'./build/include'
+            './build/include',
+            './src/gfx/glew/'						
          ],
          
          'defines': ['FREEIMAGE_LIB'],
@@ -89,7 +90,7 @@
                ]
             }],
 
-			['OS=="linux" and distrib!="raspi"', {      
+            ['OS=="linux" and distrib!="raspi"', {      
                'sources': [
                   './src/gfx/glew/glew.c',					
                   './src/gfx/glew/GL/glew.h',
@@ -106,9 +107,9 @@
                 'include_dirs+': [
                   '/opt/vc/include',
                   '/opt/vc/include/interface/vcos/pthreads',
-				],
+	        ],
                
-				'sources/': [['exclude', 'context_linux.cc|context_linux.h']],
+                'sources/': [['exclude', 'context_linux.cc|context_linux.h']],
 
             }],					
             
@@ -125,7 +126,7 @@
          
          'include_dirs+': [
             './src/core',
-			'./build/include'
+            './build/include'
          ],
             
          'sources': [
@@ -149,7 +150,7 @@
                ],
             
                'include_dirs+': [
-                   '/opt/vc/include',
+                  '/opt/vc/include',
                   '/opt/vc/include/interface/vcos/pthreads',
                ],
                
@@ -176,7 +177,8 @@
             './src/core',
             './src/net',
             './src/gfx',
-			'./build/include'
+            './src/gfx/glew',
+            './build/include'
          ],
             
          'sources': [
@@ -236,7 +238,7 @@
             }],
 
             ['OS=="linux" and distrib!="raspi"', {      
-               'libraries': [ '-lX11 -lGL -lGLEW' ]
+               'libraries': [ '-lX11 -lGL' ]
             }],              
             
          ] # conditions
