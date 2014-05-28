@@ -11,6 +11,8 @@ public:
 
 	static std::shared_ptr<Window> create(
             const std::string&,
+            const uint32_t width,
+            const uint32_t height,
             const std::weak_ptr<Channel>&);
 
 	virtual void* handle() const=0;

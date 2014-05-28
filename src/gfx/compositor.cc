@@ -169,7 +169,7 @@ void Compositor::process()
 	GLint vp[4];
    glGetIntegerv(GL_VIEWPORT, vp);
 
-   mat4<GLfloat> model, proj, mvp;
+   mat4<GLfloat> model, proj;
 
 	GLfloat width = vp[2]*1.0f;
 	GLfloat height = vp[3]*1.0f;
@@ -221,8 +221,8 @@ void Compositor::process()
       err = glGetError();
       LOG_IF(WARN, err!=GL_NO_ERROR) << "bind model";
 
-      
-      mvp *= mat4<GLfloat>::scale(1.0f, 1.0f, 0.0f);
+      mat4<GLfloat> mvp;      
+      //mvp *= mat4<GLfloat>::scale(1.0f, 1.0f, 0.0f);
 		mvp *= proj * model;
 
 	   // vertex shader needs model-view-projection
@@ -268,6 +268,6 @@ void Compositor::addLayer(const std::shared_ptr<Stream>& stream)
    if (!stream){
       return;
    }
-      
-   _layers.push_back(Layer::create("1", stream));
+
+   _layers.push_back(Layer::create("1", stream, 0.0f));
 }

@@ -7,7 +7,7 @@
 #include "stream.h"
 #include "image.h"
 #include "layer.h"
-#include "mixer.h"
+#include "compositor.h"
 
 namespace gfx {
 

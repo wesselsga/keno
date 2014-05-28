@@ -20,6 +20,8 @@ public:
 
 	static std::shared_ptr<BcmWindow> create(
             const std::string&,
+            const uint32_t width,
+            const uint32_t height,
             const std::weak_ptr<Channel>&);
 
 	void*   handle() const { return _eglw; }
@@ -44,9 +46,11 @@ private:
 
 std::shared_ptr<screen::Window> screen::Window::create(
          const std::string& title,
+         const uint32_t width,
+         const uint32_t height,
 			const std::weak_ptr<Channel>& channel)
 {
-   return BcmWindow::create(title, channel);
+   return BcmWindow::create(title, width, height, channel);
 }
 
 
@@ -66,6 +70,8 @@ BcmWindow::~BcmWindow()
 
 std::shared_ptr<BcmWindow> BcmWindow::create(
             const std::string&,
+            const uint32_t width,
+            const uint32_t height,
             const std::weak_ptr<Channel>& channel)
 {
 	LOG(VERBOSE) << "raspi: creating native window...";
@@ -93,8 +99,8 @@ std::shared_ptr<BcmWindow> BcmWindow::create(
 
 	std::shared_ptr<BcmWindow>win(new BcmWindow(_ctx{}, channel));
    
-   dst_rect.width = 1024;
-   dst_rect.height = 512;
+   dst_rect.width = width;
+   dst_rect.height = height;
    dst_rect.x = screenWidth - dst_rect.width;
    dst_rect.y = screenHeight - dst_rect.height;   
       

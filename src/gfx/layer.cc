@@ -28,7 +28,7 @@ Layer::~Layer()
 }
 
 std::shared_ptr<Layer> Layer::create(
-      const std::string&, const std::shared_ptr<Stream>& stream)
+      const std::string&, const std::shared_ptr<Stream>& stream, float zorder)
 {
    auto layer = std::make_shared<Layer>(_priv{}, stream);
 
@@ -45,10 +45,10 @@ std::shared_ptr<Layer> Layer::create(
 	GLfloat y1 = static_cast<GLfloat>(0.0f + vp[3]);
    
    struct vertex quad[] = {                    /*x*/ /*y*/  /*z*/
-		{ {0.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {x0,   y0,   0.0f, 1.0f} },
-		{ {1.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {x1,   y0,   0.0f, 1.0f} },
-		{ {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {x0,   y1,   0.0f, 1.0f} },
-		{ {1.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {x1,   y1,   0.0f, 1.0f} }
+		{ {0.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {x0,   y0,   zorder, 1.0f} },
+		{ {1.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {x1,   y0,   zorder, 1.0f} },
+		{ {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {x0,   y1,   zorder, 1.0f} },
+		{ {1.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {x1,   y1,   zorder, 1.0f} }
 	};
 
 	glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(struct vertex), quad, GL_STATIC_DRAW);

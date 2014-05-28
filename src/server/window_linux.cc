@@ -22,6 +22,8 @@ public:
 
 	static std::shared_ptr<X11Window> create(
             const std::string&,
+            const uint32_t width,
+            const uint32_t height,
             const std::weak_ptr<Channel>&);
    
    void*   handle() const { return reinterpret_cast<void*>(_frame); }
@@ -50,11 +52,12 @@ private:
 
 std::shared_ptr<screen::Window> screen::Window::create(
          const std::string& title,
+         const uint32_t width,
+         const uint32_t height,
 			const std::weak_ptr<Channel>& channel)
 {
-   return X11Window::create(title, channel);
+   return X11Window::create(title, width, height, channel);
 }
-
 
 
 
@@ -76,6 +79,8 @@ X11Window::~X11Window()
 
 std::shared_ptr<X11Window> X11Window::create(
          const std::string& title,
+         const uint32_t width,
+         const uint32_t height,
 			const std::weak_ptr<Channel>& channel)
 {
    std::shared_ptr<X11Window> win(
@@ -148,7 +153,7 @@ std::shared_ptr<X11Window> X11Window::create(
    // create the application window
    win->_frame = XCreateWindow(win->_display, 
                RootWindow(win->_display, vi->screen),
-               0, 0, 640, 480, 0, 
+               0, 0, width, height, 0, 
                vi->depth,
                InputOutput, 
                vi->visual, 

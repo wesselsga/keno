@@ -66,9 +66,11 @@ int32_t Channel::run(const std::string& id)
       std::stringstream title;
       title << PRODUCT << " (v" << VERSION_STR << ") | " << "channel:" << channel->id();
       
-      auto window = screen::Window::create(title.str(), channel);
+      auto window = screen::Window::create(title.str(), 1024, 512, channel);
 
-      ctx = gfx::Context::create(window->display(), window->handle());
+      ctx = gfx::Context::create(
+            window->display(), 
+            window->handle());
       
       // create the video mixer
       gfx::Compositor compositor;

@@ -16,6 +16,8 @@ public:
 
 	static std::shared_ptr<Win32Window> create(
             const std::string&,
+            const uint32_t width,
+            const uint32_t height,
             const std::weak_ptr<Channel>&);
 
 	void* handle() const { return _hwnd; }
@@ -48,9 +50,11 @@ private:
 
 std::shared_ptr<screen::Window> screen::Window::create(
          const std::string& title,
+         const uint32_t width,
+         const uint32_t height,
 			const std::weak_ptr<Channel>& channel)
 {
-   return Win32Window::create(title, channel);
+   return Win32Window::create(title, width, height, channel);
 }
 
 
@@ -74,6 +78,8 @@ Win32Window::~Win32Window()
 
 std::shared_ptr<Win32Window> Win32Window::create(
          const std::string& title,
+         const uint32_t width,
+         const uint32_t height,
 			const std::weak_ptr<Channel>& channel)
 {
 	std::shared_ptr<Win32Window> win(
@@ -103,9 +109,6 @@ std::shared_ptr<Win32Window> Win32Window::create(
 		::RegisterClassEx(&wcls);
 	}
 
-	uint32_t w = 1024;
-	uint32_t h = 512;
-
 	DWORD style = WS_OVERLAPPEDWINDOW;
 	DWORD exstyle = WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;
 
@@ -116,7 +119,7 @@ std::shared_ptr<Win32Window> Win32Window::create(
 	}*/
 	
 	// rc is the desired client size we want
-	RECT rc = {0, 0, w, h};
+	RECT rc = {0, 0, width, height};
 	::AdjustWindowRectEx(&rc, style, FALSE, 0);
 	
 	HWND hwnd = ::CreateWindowEx(exstyle,
