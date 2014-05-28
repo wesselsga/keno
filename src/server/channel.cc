@@ -76,14 +76,23 @@ int32_t Channel::run(const std::string& id)
       auto home = Path::home();
       home = home.append(PRODUCT);
       home.mkdir();
-      auto imgfile = home.append("default.png");
-
-      auto stream = gfx::Image::create(imgfile.c_str());
-      if (stream)
+      home = home.append("startup");
+      
+      std::vector<std::string> files;
+      home.list(files);
+      for (auto f : files)
       {
-         LOG(VERBOSE) << "adding image layer...";
-         compositor.addLayer(stream);
+         LOG(VERBOSE) << "adding layer for " << f;
+            
+         Path filename = home.append(f);
+         auto stream = gfx::Image::create(filename.c_str());
+         if (stream)
+         {
+            compositor.addLayer(stream);
+         }
       }
+      
+      
 
       // show the window on screen
 		window->show();

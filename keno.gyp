@@ -13,6 +13,8 @@
             './src/core/convert.cc',
             './src/core/file.h',
             './src/core/file.cc',
+            './src/core/file_linux.cc',
+            './src/core/file_win.cc',
             './src/core/stopwatch.h',
             './src/core/stopwatch.cc',
             './src/core/trace.h',
