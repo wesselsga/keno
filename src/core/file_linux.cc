@@ -49,7 +49,7 @@ bool Path::mkdir() const
    return false;
 }
 
-bool Path::list(vector<std::string>&) const
+bool Path::list(std::vector<std::string>& files) const
 {
    DIR* dpdf = opendir(c_str());
    if (dpdf)
