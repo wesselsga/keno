@@ -13,7 +13,9 @@ public:
 
    void process();
 
-   void addLayer(const std::shared_ptr<Stream>&);
+   std::shared_ptr<Layer> layer(size_t const) const;
+
+   std::shared_ptr<Layer> addLayer(const std::shared_ptr<Stream>&);
 
 private:
 	Compositor(const Compositor&)=delete;

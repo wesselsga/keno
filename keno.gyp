@@ -190,7 +190,9 @@
             './src/server/channel.cc',
             './src/server/channel_host.h',
             './src/server/channel_host.cc',				
-            './src/server/executor.h',
+            './src/server/config.h',
+            './src/server/config.cc',
+			'./src/server/executor.h',
             './src/server/executor.cc',       
             './src/server/server.h',				
             './src/server/server.cc',				
@@ -200,13 +202,13 @@
             './src/server/window_linux.cc',
             './src/server/window_raspi.cc'
          ],
-         
-         'conditions': [
+		 
+		 'conditions': [
             ['OS=="win"', {
                               
                'link_settings':  {
                   'libraries': [ '-lshell32.lib;kernel32.lib;psapi.lib;user32.lib;gdi32.lib;'
-                  'advapi32.lib;iphlpapi.lib;opengl32.lib;ws2_32.lib;winmm.lib;libuv.lib;freeimage.lib;freetype.lib;v8_base.lib;v8_nosnapshot.lib' ]
+                  'advapi32.lib;iphlpapi.lib;opengl32.lib;ws2_32.lib;winmm.lib;libuv.lib;freeimage.lib;freetype.lib;v8_base.lib;v8_nosnapshot.lib;' ]
                },
                
             }],

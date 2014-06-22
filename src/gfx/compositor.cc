@@ -263,11 +263,28 @@ void Compositor::process()
 
 }
 
-void Compositor::addLayer(const std::shared_ptr<Stream>& stream)
+std::shared_ptr<Layer> Compositor::layer(size_t const n) const
+{
+   if (n < _layers.size()){
+      return _layers[n];
+   }
+   return nullptr;
+}
+
+std::shared_ptr<Layer> Compositor::addLayer(const std::shared_ptr<Stream>& stream)
 {
    if (!stream){
-      return;
+      return nullptr;
    }
 
-   _layers.push_back(Layer::create("1", stream, 0.0f));
+   float z = -1.0f;
+
+   if (_layers.size() > 0)
+      z = 1.0f;
+
+   auto layer = Layer::create("1", stream, z);
+
+   _layers.push_back(layer);
+
+   return layer;
 }

@@ -1,6 +1,6 @@
 #include "server.h"
 #include "channel_host.h"
-
+#include "config.h"
 
 Server::Server(const _priv&)
 {
@@ -18,15 +18,23 @@ int32_t Server::run()
 
 	server->_self = server;
 
-	auto* loop = uv_default_loop();
+   // read the configuration so we know 
+   // how many channels to spawn
+   auto conf = Config::open(); 
+   if (!conf)
+   {
+      LOG(ERR) << "invalid configuration";
+      return -1;
+   }
 
-	const uint32_t channels = 1;
-	for (uint32_t n = 0; n < channels; ++n)
+   auto loop = uv_default_loop();
+   
+	for (auto c : conf->channels())
 	{
 		auto host = ChannelHost::create(
 					loop, 
 					server, 
-					convert::to_utf8(n));
+					c->name());
 		server->_hosts.push_back(host);	
 	}
    

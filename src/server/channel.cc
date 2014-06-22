@@ -1,5 +1,6 @@
 #include "server.h"
 #include "channel.h"
+#include "config.h"
 #include "../version.h"
 
 #include "stopwatch.h"
@@ -46,6 +47,22 @@ Channel::~Channel()
 int32_t Channel::run(const std::string& id)
 {
 	prompt();
+   
+   auto conf = Config::open(); 
+   if (!conf)
+   {
+      LOG(ERR) << "channel[" << id << "] invalid config!";
+      return -1;
+   }
+
+   // now we have config - get our 
+   // corresponding block within the conf
+   auto block = conf->getChannel(id);
+   if (!block)
+   {
+      LOG(ERR) << "channel[" << id << "] missing config!";
+      return -1;
+   }
 
 	auto channel = std::make_shared<Channel>(_priv{}, id);
 	
@@ -56,7 +73,7 @@ int32_t Channel::run(const std::string& id)
 
 	uv_cond_wait(&channel->_isReady, &channel->_lock);
 
-	LOG(VERBOSE) << "channel: " << id << " opening ...";	
+	LOG(VERBOSE) << "channel[" << id << "] opening ...";	
 	
 	gfx::startup();		
 
@@ -66,7 +83,11 @@ int32_t Channel::run(const std::string& id)
       std::stringstream title;
       title << PRODUCT << " (v" << VERSION_STR << ") | " << "channel:" << channel->id();
       
-      auto window = screen::Window::create(title.str(), 1024, 512, channel);
+      auto window = screen::Window::create(
+               title.str(), 
+               block->width(), 
+               block->height(), 
+               channel);
 
       ctx = gfx::Context::create(
             window->display(), 
@@ -92,15 +113,13 @@ int32_t Channel::run(const std::string& id)
          {
             compositor.addLayer(stream);
          }
-      }
-      
-      
+      }     
 
       // show the window on screen
 		window->show();
 		window->update();
 
-		LOG(DEBUG) << "channel: staring rendering loop ...";
+		LOG(DEBUG) << "channel[" << id << "] starting rendering loop ...";
 
 		uint32_t frame = 0;
 
