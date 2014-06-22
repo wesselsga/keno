@@ -115,6 +115,9 @@ int32_t Channel::run(const std::string& id)
          }
       }     
 
+      compositor.addEffect("fadeout", 0);
+      compositor.addEffect("fadein", 1);
+
       // show the window on screen
 		window->show();
 		window->update();

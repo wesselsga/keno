@@ -15,6 +15,7 @@ using namespace gfx;
 const char* _vertBasic = R"GLSL(
 
 uniform mat4 u_mvp;
+uniform float u_alpha;
 attribute vec2 a_tex;
 attribute vec4 a_color;
 attribute vec4 a_pos;
@@ -24,7 +25,7 @@ varying vec2 v_tex;
 void main()
 {
 	v_tex = a_tex;
-	v_color = a_color;
+	v_color = vec4(a_color.r, a_color.g, a_color.b, u_alpha);
 	gl_Position = a_pos * u_mvp;
 }
 
@@ -141,6 +142,7 @@ Compositor::Compositor()
 	//std::ifstream fs("c:\\temp\\bicubic.shdr");
 	
 	_program = Program::build(_vertBasic, _fragBasic);
+   //_program = Program::build(_vertBasic, _fragBicubic);
 
 	//glBindAttribLocation(_program->id(), 0, "a_tex");
 	//glBindAttribLocation(_program->id(), 1, "a_color");
@@ -162,8 +164,6 @@ Compositor::~Compositor()
 void Compositor::process()
 {
    glDisable(GL_DEPTH_TEST);
-
-   //glViewport(0, 0, 640, 360);
 
    // get current viewport
 	GLint vp[4];
@@ -203,11 +203,29 @@ void Compositor::process()
    err = glGetError();
    LOG_IF(WARN, err!=GL_NO_ERROR) << "size_source";
 
+   GLuint uloc_mvp = glGetUniformLocation(_program->id(), "u_mvp");
+   GLuint uloc_alpha = glGetUniformLocation(_program->id(), "u_alpha");
 
-   uloc = glGetUniformLocation(_program->id(), "u_mvp");
+   float opacity;
+
+   // do all effets -> remove any effects that are complete
+   for (auto fx = _effects.begin(); fx != _effects.end();)
+   {
+      if ((*fx)->animate()) {
+         fx++;
+      }
+      else{
+         fx = _effects.erase(fx);
+      }
+   }
    
    for (auto const layer : _layers)
    {
+      // skip hidden layers
+      if (!layer->visible()){
+         continue;
+      }
+
       // center in viewport
 		//model *= mat4<GLfloat>::translate((width-xextent)/2.0f, (height-yextent)/2.0f, 0.0f);
 
@@ -215,7 +233,6 @@ void Compositor::process()
 	   glBindTexture(GL_TEXTURE_2D, layer->texture());
 	   err = glGetError();
       LOG_IF(WARN, err!=GL_NO_ERROR) << "bind texture";
-
 
       glBindBuffer(GL_ARRAY_BUFFER, layer->model());
       err = glGetError();
@@ -226,13 +243,15 @@ void Compositor::process()
 		mvp *= proj * model;
 
 	   // vertex shader needs model-view-projection
-	   glUniformMatrix4fv(uloc, 1, false, mvp.get());
+	   glUniformMatrix4fv(uloc_mvp, 1, false, mvp.get());
+     
+      opacity = layer->opacity();
+      glUniform1fv(uloc_alpha, 1, &opacity);
 
 	   glEnableVertexAttribArray(0);
 	   glEnableVertexAttribArray(1);
 	   glEnableVertexAttribArray(2);
-      err = glGetError();
-	   
+      err = glGetError();	   
 
 	   // bind the tex coordinates to the shader (unused here)
 	   glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(struct vertex), (const GLvoid*)(0));
@@ -287,4 +306,90 @@ std::shared_ptr<Layer> Compositor::addLayer(const std::shared_ptr<Stream>& strea
    _layers.push_back(layer);
 
    return layer;
+}
+
+std::shared_ptr<Effect> Compositor::addEffect(std::string const& name, size_t layer)
+{
+   auto l = this->layer(layer);
+   if (!l) {
+      return nullptr;
+   }
+
+   std::shared_ptr<Effect> fx;
+
+   if (name == "fadein"){
+      fx = std::make_shared<FadeIn>();
+   }
+   else if (name == "fadeout"){
+      fx = std::make_shared<FadeOut>();
+   }
+
+   if (fx)
+   {
+      fx->select(l);
+      fx->reset();      
+      _effects.push_back(fx);
+   }
+
+   return fx;
+}
+
+
+void Effect::select(std::shared_ptr<Layer> const& layer)
+{
+   if (layer){
+      _layers.push_back(layer);
+   }
+}
+
+void FadeIn::reset()
+{
+   _step = 0;
+   for (auto l : _layers)
+   {
+      l->setOpacity(0.0f);
+   }  
+}
+
+bool FadeIn::animate()
+{
+   if (_step >= 255){
+      return false;
+   }
+
+   _step += 2;
+
+   float opacity = (_step / 255.0f);
+
+   for (auto l : _layers)
+   {
+      l->setOpacity(opacity);
+   }  
+   return true;
+}
+
+void FadeOut::reset()
+{
+   _step = 0;
+   for (auto l : _layers)
+   {
+      l->setOpacity(1.0f);
+   }  
+}
+
+bool FadeOut::animate()
+{
+   if (_step >= 255){
+      return false;
+   }
+
+   _step += 2;
+
+   float opacity = 1.0f - (_step / 255.0f);
+
+   for (auto l : _layers)
+   {
+      l->setOpacity(opacity);
+   }   
+   return true;
 }

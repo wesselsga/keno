@@ -120,7 +120,8 @@ std::shared_ptr<Context> WglContext::create(void* native_display)
 	//Checking GL version
 	const unsigned char* sver = glGetString(GL_VERSION);
 
-	glClearColor(0.0f, 0.0f, 1.0f, 0.0f);
+	//glClearColor(0.0f, 0.0f, 1.0f, 0.0f);
+   glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
 	WglContext* wctx = new WglContext();
 	wctx->_hrc = hrc;

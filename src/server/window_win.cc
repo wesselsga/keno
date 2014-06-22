@@ -128,8 +128,7 @@ std::shared_ptr<Win32Window> Win32Window::create(
 					style,
 					CW_USEDEFAULT,
 					CW_USEDEFAULT,
-					rc.right - rc.left,
-					rc.bottom - rc.top,
+					100,100,
 					0,
 					0,
 					module,
@@ -138,6 +137,11 @@ std::shared_ptr<Win32Window> Win32Window::create(
 	if (!::IsWindow(hwnd)) {
 		return nullptr;
 	}
+
+   ::SetWindowPos(hwnd, 0, 0, 0, 
+         rc.right-rc.left,
+         rc.bottom-rc.top,
+         SWP_NOZORDER|SWP_NOMOVE|SWP_NOSENDCHANGING);
 
 	return win;
 }

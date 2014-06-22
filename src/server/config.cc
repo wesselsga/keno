@@ -22,8 +22,6 @@ private:
    std::string getString(v8::Isolate*, v8::Local<v8::Object> const&, 
          std::string const&, std::string const&);
 
-   int32_t getInt32(v8::Isolate*, v8::Local<v8::Object> const&, 
-         std::string const&, int32_t const);
    uint32_t getUint32(v8::Isolate*, v8::Local<v8::Object> const&, 
          std::string const&, uint32_t const);
 
@@ -46,9 +44,8 @@ std::shared_ptr<Config> Config::open()
 
    std::shared_ptr<JsonConfig> conf = std::make_shared<JsonConfig>();
    
-   if (!path.exists())
-   {
-      LOG(INFO) << "config: writing defaults";
+   // no config file? generate a basic one
+   if (!path.exists()) {
       conf->writeDefault(path);
    }
 
@@ -59,6 +56,9 @@ std::shared_ptr<Config> Config::open()
    return nullptr;
 }
 
+//
+// generates a default JSON config file
+//
 void JsonConfig::writeDefault(Path const& filename)
 {
    std::ofstream out(filename.str());
@@ -98,10 +98,9 @@ bool JsonConfig::parse(Path const& filename)
    v8::Handle<v8::Context> context = v8::Context::New(iso, NULL, global);
    
    v8::Context::Scope scope(context);
-
-   auto input = v8::String::NewFromUtf8(iso, text.c_str());
-
-   v8::Local<v8::Value> result = v8::JSON::Parse(input);
+   
+   v8::Local<v8::Value> result = v8::JSON::Parse(
+         v8::String::NewFromUtf8(iso, text.c_str()));
 
    if (result.IsEmpty()) 
    {
@@ -145,21 +144,6 @@ std::string JsonConfig::getString(v8::Isolate* iso,
    v8::String::Utf8Value utf8(v->ToString());
 
    return std::string(*utf8);
-}
-
-int32_t JsonConfig::getInt32(v8::Isolate* iso, 
-      v8::Local<v8::Object> const& obj, std::string const& prop, int32_t const defval)
-{
-   if (!iso || obj.IsEmpty()){
-      return defval;
-   }
-
-   auto v = obj->Get(v8::String::NewFromUtf8(iso, prop.c_str()));
-   if (v.IsEmpty() || !v->IsNumber()){
-      return defval;
-   }
-
-   return v->Int32Value();
 }
 
 uint32_t JsonConfig::getUint32(v8::Isolate* iso, 

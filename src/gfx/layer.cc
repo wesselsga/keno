@@ -19,7 +19,9 @@ struct vertex
 Layer::Layer(const _priv&, const std::shared_ptr<Stream>& stream)
    : _stream(stream)
 {
+   _visible = true;
    _model = 0;
+   _opacity = 1.0f;
 }
 
 Layer::~Layer()
@@ -57,3 +59,17 @@ std::shared_ptr<Layer> Layer::create(
 	return layer;
 }
 
+float Layer::opacity() const
+{
+   return _opacity;
+}
+
+void Layer::setOpacity(float const val)
+{
+   _opacity = val;
+}
+
+void Layer::setVisible(bool const flag)
+{
+   _visible = flag;
+}
