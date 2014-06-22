@@ -1,5 +1,34 @@
 #include "core.h"
-#include "stopwatch.h"
+#include "clock.h"
+
+
+class HiresClock : public Clock
+{
+public:
+   HiresClock(){}
+   ~HiresClock(){}
+
+   int64_t ticks() const
+   {
+      return hires_time();
+   }
+
+   int64_t frequency() const
+   {
+      return hires_frequency();
+   }
+
+private:
+
+};
+
+
+std::shared_ptr<Clock> Clock::create()
+{
+   return std::make_shared<HiresClock>();
+}
+
+
 
 //
 //

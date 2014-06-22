@@ -1,16 +1,17 @@
 #pragma once
 
+class Clock;
+
 namespace gfx {
 
 class Layer;
-class Program;
-
 class Effect;
+class Program;
 
 class Compositor
 {
 public:
-	explicit Compositor();
+	explicit Compositor(std::shared_ptr<Clock> const&);
 	virtual ~Compositor();
 
    void process();
@@ -36,55 +37,9 @@ private:
 
    std::shared_ptr<Program> _program;
 
-};
-
-
-class Effect
-{
-public:
-   virtual ~Effect(){}
-
-   void select(std::shared_ptr<Layer> const&);
-   
-   virtual void reset()=0;
-   virtual bool animate()=0;
-
-protected:
-   Effect(){}
-
-   std::vector<std::shared_ptr<Layer>> _layers;
+   std::shared_ptr<Clock> _clock;
 
 };
-
-class FadeIn : public Effect
-{
-public:
-   FadeIn() : _step(0) { }
-
-   void reset();   
-   bool animate();
-
-private:
-
-   uint16_t _step;
-
-};
-
-class FadeOut : public Effect
-{
-public:
-   FadeOut() : _step(0) { }
-
-   void reset();
-   bool animate();
-
-private:
-
-   uint16_t _step;
-};
-
-
-
 
 
 };

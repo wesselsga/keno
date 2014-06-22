@@ -1,6 +1,9 @@
 #include "gfx.h"
-
 #include "shader.h"
+
+#include <clock.h>
+
+#include "effect.h"
 
 #ifdef _RASPI
 #include <GLES2/gl2.h>
@@ -124,8 +127,6 @@ vec4 cubic(float x)
 )GLSL";
 
 
-
-
 struct vertex
 {
 	GLfloat tex[2];
@@ -133,7 +134,10 @@ struct vertex
 	GLfloat pos[4];
 };
 
-Compositor::Compositor()
+
+
+Compositor::Compositor(std::shared_ptr<Clock> const& clock)
+   : _clock(clock)
 {
    // load our screen shader
 	//std::cout << "mixer: loading shaders...";
@@ -308,88 +312,24 @@ std::shared_ptr<Layer> Compositor::addLayer(const std::shared_ptr<Stream>& strea
    return layer;
 }
 
+//
+// adds an effect targeting the given layer
+//
 std::shared_ptr<Effect> Compositor::addEffect(std::string const& name, size_t layer)
 {
-   auto l = this->layer(layer);
-   if (!l) {
+   auto target = this->layer(layer);
+   if (!target) {
       return nullptr;
    }
 
-   std::shared_ptr<Effect> fx;
-
-   if (name == "fadein"){
-      fx = std::make_shared<FadeIn>();
-   }
-   else if (name == "fadeout"){
-      fx = std::make_shared<FadeOut>();
-   }
-
+   auto fx = Effect::create(name, _clock);
    if (fx)
    {
-      fx->select(l);
+      fx->select(target);
       fx->reset();      
+
       _effects.push_back(fx);
    }
 
    return fx;
-}
-
-
-void Effect::select(std::shared_ptr<Layer> const& layer)
-{
-   if (layer){
-      _layers.push_back(layer);
-   }
-}
-
-void FadeIn::reset()
-{
-   _step = 0;
-   for (auto l : _layers)
-   {
-      l->setOpacity(0.0f);
-   }  
-}
-
-bool FadeIn::animate()
-{
-   if (_step >= 255){
-      return false;
-   }
-
-   _step += 2;
-
-   float opacity = (_step / 255.0f);
-
-   for (auto l : _layers)
-   {
-      l->setOpacity(opacity);
-   }  
-   return true;
-}
-
-void FadeOut::reset()
-{
-   _step = 0;
-   for (auto l : _layers)
-   {
-      l->setOpacity(1.0f);
-   }  
-}
-
-bool FadeOut::animate()
-{
-   if (_step >= 255){
-      return false;
-   }
-
-   _step += 2;
-
-   float opacity = 1.0f - (_step / 255.0f);
-
-   for (auto l : _layers)
-   {
-      l->setOpacity(opacity);
-   }   
-   return true;
 }

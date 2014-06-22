@@ -3,7 +3,7 @@
 #include "config.h"
 #include "../version.h"
 
-#include "stopwatch.h"
+#include "clock.h"
 #include "window.h"
 
 #include "image.h"
@@ -94,7 +94,7 @@ int32_t Channel::run(const std::string& id)
             window->handle());
       
       // create the video mixer
-      gfx::Compositor compositor;
+      gfx::Compositor compositor(Clock::create());
 
       auto home = Path::home();
       home = home.append(PRODUCT);
