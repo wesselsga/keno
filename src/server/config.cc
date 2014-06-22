@@ -13,6 +13,8 @@ public:
 
    bool parse(Path const&);
 
+   void writeDefault(Path const&);
+
 private:
 
    bool addChannel(v8::Isolate*, v8::Local<v8::Object> const&);
@@ -42,12 +44,38 @@ std::shared_ptr<Config> Config::open()
    file.append(".conf");
    path = path.append(file);
 
-   std::shared_ptr<JsonConfig> cfg = std::make_shared<JsonConfig>();
-   if (cfg->parse(path)){
-      return cfg;
+   std::shared_ptr<JsonConfig> conf = std::make_shared<JsonConfig>();
+   
+   if (!path.exists())
+   {
+      LOG(INFO) << "config: writing defaults";
+      conf->writeDefault(path);
+   }
+
+   if (conf->parse(path)){
+      return conf;
    }
       
    return nullptr;
+}
+
+void JsonConfig::writeDefault(Path const& filename)
+{
+   std::ofstream out(filename.str());
+   if (!out.is_open())
+   {
+      LOG(ERR) << "config: could not write " << filename.str();
+      return;
+   }
+
+   out << "{" << std::endl << "\t\"channels\": [" << std::endl;
+   out << "\t\t{" << std::endl;
+   out << "\t\t\t\"name\": \"default\"," << std::endl;
+   out << "\t\t\t\"width\": 512," << std::endl;
+   out << "\t\t\t\"height\": 256" << std::endl;   
+   out << "\t\t}" << std::endl;
+   out << "\t]" << std::endl;
+   out << "}";   
 }
 
 bool JsonConfig::parse(Path const& filename)
