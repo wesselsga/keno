@@ -115,8 +115,8 @@ int32_t Channel::run(const std::string& id)
          }
       }     
 
-      compositor.addEffect("fadeout", 0);
-      compositor.addEffect("fadein", 1);
+      auto layer = compositor.layer(1);
+      layer->setVisible(false);
 
       // show the window on screen
 		window->show();
@@ -129,6 +129,9 @@ int32_t Channel::run(const std::string& id)
 		int64_t freq = hires_frequency();
 		int64_t now, mark = hires_time();
 
+      bool fx = false;
+      int64_t timer = hires_time();
+
 		for (;;)
 		{
          if (window->pump() < 0)
@@ -136,6 +139,15 @@ int32_t Channel::run(const std::string& id)
 				channel->close();
 				break;
 			}
+
+         if (!fx && ((hires_time() - timer) > (hires_frequency()*2)))
+         {
+            //compositor.addEffect("fadeout", 1000, 0);
+            compositor.addEffect("fadein", "slow", 1);
+            layer = compositor.layer(1);
+            fx = true;
+         }
+
 
          ctx->clear();
          

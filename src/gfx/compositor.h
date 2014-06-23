@@ -20,7 +20,8 @@ public:
 
    std::shared_ptr<Layer> addLayer(const std::shared_ptr<Stream>&);
 
-   std::shared_ptr<Effect> addEffect(std::string const&, size_t);
+   std::shared_ptr<Effect> addEffect(std::string const&, uint32_t, size_t);
+   std::shared_ptr<Effect> addEffect(std::string const&, std::string const&, size_t);
 
 private:
 	Compositor(const Compositor&)=delete;

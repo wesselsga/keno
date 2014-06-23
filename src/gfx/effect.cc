@@ -9,23 +9,39 @@ namespace tween {
       return ((c * t) / d) + b;
    }
 
+   float easeOutQuad(float t, float b, float c, float d)
+   {
+      t = t / d;
+      return -c * t * (t-2) + b;
+   }
+   
+   float easeInOut(float t, float b, float c, float d)
+   {
+	   t = t / d;
+      return c * (t * t + b);	   
+   }
+
+
 } // tween
 
 
 using namespace gfx;
 
 
-std::shared_ptr<Effect> Effect::create(std::string const& which, 
+std::shared_ptr<Effect> Effect::create(
+      std::string const& which, 
+      uint32_t duration, 
       std::shared_ptr<Clock> const& clock)
 {
    std::shared_ptr<Effect> fx;
 
    if (which == "fadein"){
-      fx = std::make_shared<FadeIn>(clock);
+      fx = std::make_shared<Fade>(clock,duration,false,tween::easeOutQuad);
    }
    else if (which == "fadeout"){
-      fx = std::make_shared<FadeOut>(clock);
+      fx = std::make_shared<Fade>(clock,duration,true,tween::easeOutQuad);
    }
+
 
    return fx;
 }
@@ -55,66 +71,40 @@ float Effect::elapsed() const
    return static_cast<float>(t * 1000.0f);
 }
 
-void FadeIn::reset()
+Fade::Fade(std::shared_ptr<Clock> const& clock, 
+   uint32_t duration,
+   bool inverse, Easing easing) 
+   : Effect(clock, duration), 
+   _inverse(inverse), 
+   _easing(easing)
 {
-   for (auto l : _layers) {
-      l->setOpacity(0.0f);
+}
+
+void Fade::reset()
+{
+   for (auto layer : _layers) 
+   {
+      layer->setOpacity(_inverse ? 1.0f : 0.0f);
+      layer->setVisible(true);
    }
    Effect::reset();
 }
 
-bool FadeIn::animate()
+bool Fade::animate()
 {
    float t = static_cast<float>(elapsed());
 
-   float opacity = tween::linear(t, 0.0, 255.0f, 1000.0f);
+   float opacity = _easing(t, 0.0, 255.0f, _duration);
 
    opacity = opacity / 255.0f;
 
+   //LOG(VERBOSE) << "fx: clock=" << t << ", opacity=" << opacity;
+   
    for (auto l : _layers) {
-      l->setOpacity(opacity);
+      l->setOpacity(_inverse ? 1.0f - opacity : opacity);
    } 
 
-   return true;
-}
-
-void FadeOut::reset()
-{
-   for (auto l : _layers) {
-      l->setOpacity(1.0f);
-   }
-   Effect::reset();
-}
-
-bool FadeOut::animate()
-{
-   float t = static_cast<float>(elapsed());
-
-   float opacity = tween::linear(t, 0.0, 255.0f, 1000.0f);
-   opacity = opacity / 255.0f;
-
-   for (auto l : _layers) {
-      l->setOpacity(1.0f - opacity);
-   } 
-
-   return true;
+   return (t < static_cast<float>(_duration));
 }
 
 
-float easeInOut(float t, float b, float c, float d)
-{
-	/*t = t / (d / 2);
-
-	if (t < 1){
-		return (c / 2) * t * t + b;
-	}
-
-	--t;
-
-	return -c / 2 * (t * (t-2) - 1) + b;*/
-
-	t = t / d;
-
-	return c * (t * t + b);
-	//return -c * t * (t-2) + b;
-}

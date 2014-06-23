@@ -212,13 +212,15 @@ void Compositor::process()
 
    float opacity;
 
-   // do all effets -> remove any effects that are complete
+   // do all effects -> remove any effects that are complete
    for (auto fx = _effects.begin(); fx != _effects.end();)
    {
       if ((*fx)->animate()) {
          fx++;
       }
-      else{
+      else
+      {
+         LOG(INFO) << "effect is done.";
          fx = _effects.erase(fx);
       }
    }
@@ -315,14 +317,36 @@ std::shared_ptr<Layer> Compositor::addLayer(const std::shared_ptr<Stream>& strea
 //
 // adds an effect targeting the given layer
 //
-std::shared_ptr<Effect> Compositor::addEffect(std::string const& name, size_t layer)
+std::shared_ptr<Effect> Compositor::addEffect(
+      std::string const& name, 
+      std::string const& duration, 
+      size_t layer)
+{
+   uint32_t d = 400;
+   if (duration == "slow"){
+      d = 600;
+   }
+   else if (duration == "fast"){
+      d = 200;
+   }
+   
+   return addEffect(name, d, layer);
+}
+
+//
+// adds an effect targeting the given layer
+//
+std::shared_ptr<Effect> Compositor::addEffect(
+      std::string const& name, 
+      uint32_t duration, 
+      size_t layer)
 {
    auto target = this->layer(layer);
    if (!target) {
       return nullptr;
    }
 
-   auto fx = Effect::create(name, _clock);
+   auto fx = Effect::create(name, duration, _clock);
    if (fx)
    {
       fx->select(target);
